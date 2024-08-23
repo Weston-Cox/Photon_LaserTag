@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class PostgreSQLExample {
     public static void main(String[] args) {
-        // Database credentials
+        // PostgreSQL Database credentials
         String url = "jdbc:postgresql://192.168.0.42:5432/photon";
         String user = "student";
         String password = "student";
