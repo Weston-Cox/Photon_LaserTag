@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="900.0" style="-fx-background-color: #2b2b2b;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" layoutX="25.0" layoutY="25.0" prefHeight="646.0" prefWidth="900.0" spacing="20.0" style="-fx-background-color: #2b2b2b;">
+         <children>
+            <Pane style="-fx-background-color: green; ">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="342.0" text="GREEN TEAM" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                  </Label>
+                  <GridPane alignment="CENTER" hgap="10" style="-fx-padding: 30px 30px 30px 30px;" vgap="10">
+                     <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <Label text="ID" textFill="WHITE" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="Codename" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="g_01" alignment="CENTER" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="g_11" alignment="CENTER" text="Willy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="g_02" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="g_12" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="g_03" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="g_13" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="g_04" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="g_14" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="g_05" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="g_15" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="g_06" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField fx:id="g_16" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="g_07" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <TextField fx:id="g_17" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <TextField fx:id="g_08" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                        <TextField fx:id="g_18" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <TextField fx:id="g_09" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                        <TextField fx:id="g_19" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <TextField fx:id="g_10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+                        <TextField fx:id="g_20" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <TextField fx:id="g_11" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+                        <TextField fx:id="g_21" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <TextField fx:id="g_12" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="12" />
+                        <TextField fx:id="g_22" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <TextField fx:id="g_13" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="13" />
+                        <TextField fx:id="g_23" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                        <TextField fx:id="g_14" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="14" />
+                        <TextField fx:id="g_24" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <TextField fx:id="g_15" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="15" />
+                        <TextField fx:id="g_25" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                     </children>
+                  </GridPane>
+               </children>
+            </Pane>
+            <Pane style="-fx-background-color: red; ">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="342.0" text="RED TEAM" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                  </Label>
+                  <GridPane alignment="CENTER" hgap="10" style="-fx-padding: 30px 30px 30px 30px;" vgap="10">
+                     <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <Label text="ID" textFill="WHITE" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="Codename" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField alignment="CENTER" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField alignment="CENTER" text="Willy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="12" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="13" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="14" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="15" />
+                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                     </children>
+                  </GridPane>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="25.0" layoutY="655.0" prefHeight="55.0" prefWidth="850.0">
+         <children>
+            <ToolBar prefHeight="57.0" prefWidth="850.0" style="-fx-background-color: #2b2b2b;">
+               <items>
+                  <Button mnemonicParsing="false" text="Submit">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </items>
+            </ToolBar>
+         </children>
+      </HBox>
+   </children>
+</VBox>

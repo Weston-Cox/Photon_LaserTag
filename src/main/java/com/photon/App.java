@@ -22,8 +22,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // postgreObj = PostgreSQL.getInstance();
-        scene = new Scene(loadFXML("primary"), 1280, 720);
+        scene = new Scene(loadFXML("InitialScreen"), 900, 720);
         stage.setScene(scene);
+        stage.setResizable(true);
         stage.show();
 
         // Add shutdown hook to close PostgreSQL connection

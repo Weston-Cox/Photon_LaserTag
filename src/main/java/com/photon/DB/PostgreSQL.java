@@ -15,7 +15,7 @@ public class PostgreSQL {
 
     public PostgreSQL() {
         // PostgreSQL Database credentials
-        this.url = "jdbc:postgresql://192.168.0.42:5432/photon";
+        this.url = "jdbc:postgresql://10.35.103.48:5432/photon";
         this.user = "student";
         this.password = "student";
         this.conn = null;
