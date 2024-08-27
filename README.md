@@ -36,8 +36,8 @@ Before you begin, ensure you have the following installed on your system:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/photon-laser-tag.git
-   cd photon-laser-tag
+   gh repo clone Weston-Cox/Photon_LaserTag
+   cd Photon_LaserTag
 
 2. **Install Dependencies**
    ```bash
