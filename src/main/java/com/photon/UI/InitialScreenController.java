@@ -10,7 +10,7 @@ import java.util.List;
 import com.photon.DB.Player;
 import com.photon.DB.PlayerDAO;
 
-public class PrimaryController {
+public class InitialScreenController {
     @FXML
     private TableView<Player> playerTable;
     @FXML

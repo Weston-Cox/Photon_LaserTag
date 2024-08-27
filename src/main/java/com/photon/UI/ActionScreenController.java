@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 // Photon Specific Packages
 import com.photon.App;
 
-public class SecondaryController {
+public class ActionScreenController {
 
     @FXML
     private void switchToPrimary() throws IOException {
