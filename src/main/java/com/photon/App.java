@@ -40,7 +40,7 @@ public class App extends Application {
         }));
     }
 
-    // @Override
+    // 
     // public void stop() {
         // Close PostgreSQL connection when the application stops
         // postgreObj.closeConnection();
