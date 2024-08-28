@@ -12,8 +12,13 @@ import java.sql.SQLException;
 public class PlayerDAO {
     private Connection connection;
 
-    public PlayerDAO() {
-        this.connection = PostgreSQL.getInstance().getConnection();
+    public PlayerDAO(PostgreSQL postgreSQL) {
+        try {
+            this.connection = postgreSQL.getConnection();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createPlayer(Player player) {
