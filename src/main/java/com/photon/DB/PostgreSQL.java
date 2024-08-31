@@ -19,6 +19,7 @@ public class PostgreSQL {
         this.user = "student";
         this.password = "student";
         this.conn = null;
+        CreateDBConnection();
     }
 
     public PostgreSQL(String url, String user, String password) {
@@ -26,6 +27,7 @@ public class PostgreSQL {
         this.user = user;
         this.password = password;
         this.conn = null;
+        CreateDBConnection();
     }
 
     //*******************************************************************************************
@@ -45,6 +47,20 @@ public class PostgreSQL {
             instance = new PostgreSQL(url, user, password);
         }
         return instance;
+    }
+
+    //*******************************************************************************************
+    // closeConnection
+    // Description: Closes the connection to the PostgreSQL database
+    //*******************************************************************************************
+    public void closeConnection() throws SQLException{
+        try {
+            if (this.conn != null) {
+                this.conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -78,24 +94,7 @@ public class PostgreSQL {
 // GETTERS AND SETTERS
 //*******************************************************************************************
     public Connection getConnection() throws SQLException {
-        try {
-            if (this.conn == null || this.conn.isClosed()) {
-                CreateDBConnection();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         return this.conn;
     }
 
-    public void closeConnection() throws SQLException{
-        try {
-            if (this.conn != null && !this.conn.isClosed()) {
-                this.conn.close();
-                System.out.println("PostgreSQL connection closed.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

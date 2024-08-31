@@ -49,48 +49,48 @@
                         <RowConstraints />
                         <RowConstraints />
                      </rowConstraints>
-                     <children>
+                      <children>
                         <Label text="ID" textFill="WHITE" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                             <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
                         <Label text="Codename" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                             <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="g_01" alignment="CENTER" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="g_11" alignment="CENTER" text="Willy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="g_02" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField fx:id="g_12" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="g_03" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <TextField fx:id="g_13" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="g_04" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <TextField fx:id="g_14" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField fx:id="g_05" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <TextField fx:id="g_15" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField fx:id="g_06" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                        <TextField fx:id="g_16" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <TextField fx:id="g_07" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                        <TextField fx:id="g_17" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <TextField fx:id="g_08" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-                        <TextField fx:id="g_18" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <TextField fx:id="g_09" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-                        <TextField fx:id="g_19" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <TextField fx:id="g_10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="10" />
-                        <TextField fx:id="g_20" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                        <TextField fx:id="g_11" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="11" />
-                        <TextField fx:id="g_21" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                        <TextField fx:id="g_12" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="12" />
-                        <TextField fx:id="g_22" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                        <TextField fx:id="g_13" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="13" />
-                        <TextField fx:id="g_23" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-                        <TextField fx:id="g_14" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="14" />
-                        <TextField fx:id="g_24" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="14" />
-                        <TextField fx:id="g_15" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="15" />
-                        <TextField fx:id="g_25" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-                     </children>
+                        <TextField fx:id="g_0_1" alignment="CENTER" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="g_1_1" alignment="CENTER" text="Willy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="g_0_2" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="g_1_2" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="g_0_3" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="g_1_3" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="g_0_4" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="g_1_4" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="g_0_5" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="g_1_5" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="g_0_6" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField fx:id="g_1_6" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="g_0_7" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <TextField fx:id="g_1_7" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <TextField fx:id="g_0_8" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                        <TextField fx:id="g_1_8" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <TextField fx:id="g_0_9" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                        <TextField fx:id="g_1_9" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <TextField fx:id="g_0_10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+                        <TextField fx:id="g_1_10" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <TextField fx:id="g_0_11" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+                        <TextField fx:id="g_1_11" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <TextField fx:id="g_0_12" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="12" />
+                        <TextField fx:id="g_1_12" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <TextField fx:id="g_0_13" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="13" />
+                        <TextField fx:id="g_1_13" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                        <TextField fx:id="g_0_14" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="14" />
+                        <TextField fx:id="g_1_14" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <TextField fx:id="g_0_15" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="15" />
+                        <TextField fx:id="g_1_15" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                       </children>
                   </GridPane>
                </children>
             </Pane>
@@ -124,48 +124,48 @@
                         <RowConstraints />
                         <RowConstraints />
                      </rowConstraints>
-                     <children>
+                        <children>
                         <Label text="ID" textFill="WHITE" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                           <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
                         <Label text="Codename" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                           <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField alignment="CENTER" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField alignment="CENTER" text="Willy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="10" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="11" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="12" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="13" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="14" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="14" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="15" />
-                        <TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-                     </children>
+                        <TextField fx:id="r_0_1" alignment="CENTER" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="r_1_1" alignment="CENTER" text="Willy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="r_0_2" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="r_1_2" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="r_0_3" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="r_1_3" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="r_0_4" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="r_1_4" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="r_0_5" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="r_1_5" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="r_0_6" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField fx:id="r_1_6" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="r_0_7" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <TextField fx:id="r_1_7" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <TextField fx:id="r_0_8" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                        <TextField fx:id="r_1_8" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <TextField fx:id="r_0_9" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                        <TextField fx:id="r_1_9" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <TextField fx:id="r_0_10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+                        <TextField fx:id="r_1_10" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <TextField fx:id="r_0_11" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+                        <TextField fx:id="r_1_11" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <TextField fx:id="r_0_12" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="12" />
+                        <TextField fx:id="r_1_12" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <TextField fx:id="r_0_13" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="13" />
+                        <TextField fx:id="r_1_13" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                        <TextField fx:id="r_0_14" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="14" />
+                        <TextField fx:id="r_1_14" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <TextField fx:id="r_0_15" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="15" />
+                        <TextField fx:id="r_1_15" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                      </children>
                   </GridPane>
                </children>
             </Pane>

@@ -18,7 +18,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
-    private PostgreSQL postgreObj;
+    private static PostgreSQL postgreObj;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -51,7 +51,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         fxmlLoader.setControllerFactory(param -> { // Dependency Injection of postgreSQL object
             if (param == InitialScreenController.class) {
-                return new InitialScreenController(new PostgreSQL());
+                return new InitialScreenController(postgreObj);
             } else {
                 try {
                     return param.getConstructor().newInstance();

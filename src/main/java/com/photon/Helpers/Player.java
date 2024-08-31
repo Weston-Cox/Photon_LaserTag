@@ -1,6 +1,4 @@
-package com.photon.DB;
-
-import com.photon.Helpers.Team;
+package com.photon.Helpers;
 
 public class Player {
     private String codename;
