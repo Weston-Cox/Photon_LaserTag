@@ -116,6 +116,23 @@ public class InitialScreenController {
     }
 
 
+	private void attachFocusLostListeners(TextField[] textFieldRow, int row, String teamColor) {
+		final int r = row;
+		final int c = 1;
+		TextField emptyField = new TextField(); // Empty text field to act as a placeholder
+		emptyField.setId(teamColor);
+		applyTextConstraint(textFieldRow[1]); // Applies a text constraint to the codename column text fields
+		textFieldRow[1].focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (!newValue) { // Focus lost
+					onFocusLost(textFieldRow, r, c); // Calls the onFocusLost method that we defined on the specifid TextField.
+				}
+			}
+		});
+	}
+
+
     //*******************************************************************************************
     // onFocusLost
     // Description: Handles the focus lost event for a text field
@@ -166,11 +183,13 @@ public class InitialScreenController {
 								// Update the reference in the array
 								textFieldRow[1] = newTextField; 
 								// Set focus to the new TextField
-								newTextField.requestFocus();
+								textFieldRow[1].requestFocus();
+								attachFocusLostListeners(textFieldRow, row, "g");
 							}
 						}
 						initialScreenModel.setIDOfGreenPlayer(row, column, id);
 						initialScreenModel.setCodenameOfGreenPlayer(row, column, codename);
+						initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
 
 					// If the text field is a red player
 					} else if (teamColor.equals("r")) { 
@@ -206,11 +225,13 @@ public class InitialScreenController {
 								// Update the reference in the array
 								textFieldRow[1] = newTextField; 
 								// Set focus to the new TextField
-								newTextField.requestFocus();
+								textFieldRow[1].requestFocus();
+								attachFocusLostListeners(textFieldRow, row, "r");
 							}
 						}
 						initialScreenModel.setIDOfRedPlayer(row, column, id);
 						initialScreenModel.setCodenameOfRedPlayer(row, column, codename);
+						initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -223,9 +244,14 @@ public class InitialScreenController {
 			return;
 		} else if (column == 1) {
 			String inputCodename = textFieldRow[column].getText();
+			System.out.println("Input codename: " + inputCodename);
 			if (teamColor.equals("g")) {
 				if (inputCodename.matches(safePattern)) {
 					initialScreenModel.setCodenameOfGreenPlayer(row, column, inputCodename);
+					if (!textFieldRow[0].getText().isEmpty()) { // If the ID text field is not empty, store the player
+						initialScreenModel.storePlayer(Integer.parseInt(textFieldRow[0].getText()), inputCodename);
+						return;
+					}
 				} else {
 					textFieldRow[column].setText("");
 					System.out.println("Unsafe green team input detected at [" + column + "][" + row + "]. Input cleared.");
@@ -233,12 +259,15 @@ public class InitialScreenController {
 			} else if (teamColor.equals("r")) {
 				if (inputCodename.matches(safePattern)) {
 					initialScreenModel.setCodenameOfRedPlayer(row, column, inputCodename);
+					if (!textFieldRow[0].getText().isEmpty()) { // If the ID text field is not empty, store the player
+						initialScreenModel.storePlayer(Integer.parseInt(textFieldRow[0].getText()), inputCodename);
+						return;
+					}
 				} else {
 					textFieldRow[column].setText("");
 					System.out.println("Unsafe red team input detected at [" + column + "][" + row + "]. Input cleared.");
 				}
 			}
-
 		}
 	}
     //*******************************************************************************************

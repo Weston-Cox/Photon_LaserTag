@@ -7,7 +7,7 @@ import com.photon.Helpers.Player;
 public class InitialScreenModel {
     private Player greenPlayers[][] = new Player[2][15];
     private Player redPlayers[][] = new Player[2][15];
-        private PlayerDAO playerDAO;
+    private PlayerDAO playerDAO;
 
 
     public InitialScreenModel(PostgreSQL postgreSQL) {
@@ -33,6 +33,15 @@ public class InitialScreenModel {
             return player.getCodename();
         }
         return "";
+    }
+
+
+    public boolean storePlayer(int id, String codename) {
+        if (this.playerDAO.updatePlayerInfo(id, codename)) { // Trys to update the player info
+            return true;
+        } else { // If it can't update the player info, then it creates a new player
+            return this.playerDAO.createPlayer(id, codename);
+        }
     }
 
 

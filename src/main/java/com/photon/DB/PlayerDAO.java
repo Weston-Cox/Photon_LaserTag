@@ -25,10 +25,6 @@ public class PlayerDAO {
         }
     }
 
-    public void createPlayer(Player player) {
-        // Create a new player in the database
-    }
-
     public Player findPlayerByID(int id) {
         Player player = null;
         String query = "SELECT * FROM players WHERE id = ?";
@@ -58,5 +54,39 @@ public class PlayerDAO {
             e.printStackTrace();
         }
         return players;
+    }
+
+
+    public boolean updatePlayerInfo(int id, String codename) {
+        String query = "UPDATE players SET codename = ? WHERE id = ?";
+        try (PreparedStatement stmt = this.connection.prepareStatement(query)) {
+            stmt.setString(1, codename);
+            stmt.setInt(2, id);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    public boolean createPlayer(int id, String codename) {
+        String query = "INSERT INTO players (id, codename) VALUES (?, ?)";
+        try (PreparedStatement stmt = this.connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.setString(2, codename);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
