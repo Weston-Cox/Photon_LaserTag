@@ -1,9 +1,12 @@
 package com.photon.UI;
 
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -76,6 +79,7 @@ public class InitialScreenController {
 
         attachFocusLostListeners(greenPlayers);
         attachFocusLostListeners(redPlayers);
+
     }
 
     //*******************************************************************************************
@@ -90,8 +94,7 @@ public class InitialScreenController {
             final int row = i;
 
             applyNumericConstraint(players.get(row)[0]);  // Applies a numeric contraint to the ID column text fields
-            applyNumericConstraint(players.get(row)[1]);  // Applies a numeric contraint to the codename column text fields
-            
+			applyTextConstraint(players.get(row)[1]); // Applies a text constraint to the codename column text fields            
             players.get(row)[0].focusedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -116,69 +119,131 @@ public class InitialScreenController {
     //*******************************************************************************************
     // onFocusLost
     // Description: Handles the focus lost event for a text field
-    //*******************************************************************************************
-    private void onFocusLost(TextField[] textFieldRow, int row, int column) {
-        String safePattern = "^[a-zA-Z0-9\\s._-]*$"; // Safe pattern for codenames to prevent SQL injection
-        String teamColor = textFieldRow[0].getId().substring(0, 1); // Gets the team color from the ID of the first text field
-        String text = textFieldRow[column].getText(); // Gets the text from the text field
+	//*******************************************************************************************
+	private void onFocusLost(TextField[] textFieldRow, int row, int column) {
+		String safePattern = "^[a-zA-Z0-9\\s._-]*$"; // Safe pattern for codenames to prevent SQL injection
+		String teamColor = textFieldRow[0].getId().substring(0, 1); // Gets the team color from the ID of the first text field
 
-        System.out.println("TextField at [" + column + "][" + row + "] lost focus with value: " + text);
+		if (column == 0 && textFieldRow[column].getText().isEmpty()) {
+			System.out.println("ID is empty");
+			return;
+		} else if (column == 0) {
+			int id = Integer.parseInt(textFieldRow[column].getText()); // Converts the string id to an integer
+			String codename = initialScreenModel.getCodenameOfExistingID(id); // Grabs the codename from the database
+			Platform.runLater(() -> { // Run on the JavaFX thread
+				try {
+					// If the text field is a green player
+					if (teamColor.equals("g")) { 
+						if (!codename.isEmpty() && textFieldRow[1].getText().isEmpty()) { // If the codename is not empty, set the codename to the one in the database
+							// Create a new TextField
+							TextField newTextField = new TextField(codename);
+							// Copy properties from the old TextField
+							newTextField.setId(textFieldRow[1].getId());
+							newTextField.setStyle(textFieldRow[1].getStyle());
+							newTextField.setPrefWidth(textFieldRow[1].getPrefWidth());
+							newTextField.setPrefHeight(textFieldRow[1].getPrefHeight());
+							newTextField.setMinWidth(textFieldRow[1].getMinWidth());
+							newTextField.setMinHeight(textFieldRow[1].getMinHeight());
+							newTextField.setMaxWidth(textFieldRow[1].getMaxWidth());
+							newTextField.setMaxHeight(textFieldRow[1].getMaxHeight());
+							newTextField.setLayoutX(textFieldRow[1].getLayoutX());
+							newTextField.setLayoutY(textFieldRow[1].getLayoutY());
+							newTextField.setAlignment(textFieldRow[1].getAlignment());
+							newTextField.setFocusTraversable(true);
+							// Replace the old TextField with the new one in the parent
+							Parent parent = textFieldRow[1].getParent();
+							if (parent instanceof GridPane) {
+								GridPane gridPane = (GridPane) parent;
+								int colIndex = GridPane.getColumnIndex(textFieldRow[1]);
+								int rowIndex = GridPane.getRowIndex(textFieldRow[1]);
+								// Find the index of the old TextField in the children list
+								int oldIndex = gridPane.getChildren().indexOf(textFieldRow[1]);
+								gridPane.getChildren().remove(textFieldRow[1]);
+								// Add the new TextField at the same indexes
+								gridPane.getChildren().add(oldIndex, newTextField);
+								GridPane.setColumnIndex(newTextField, colIndex);
+								GridPane.setRowIndex(newTextField, rowIndex);
+								// Update the reference in the array
+								textFieldRow[1] = newTextField; 
+								// Set focus to the new TextField
+								newTextField.requestFocus();
+							}
+						}
+						initialScreenModel.setIDOfGreenPlayer(row, column, id);
+						initialScreenModel.setCodenameOfGreenPlayer(row, column, codename);
 
-        if (column == 0 && textFieldRow[column].getText().isEmpty()) {
-            System.out.println("ID is empty");
-            return;
-        } else if (column == 0) {
-        int id = Integer.parseInt(textFieldRow[column].getText()); // Converts the string id to an integer
-        CompletableFuture.supplyAsync(() -> initialScreenModel.getCodenameOfExistingID(id))
-            .thenAccept(codename -> {
-                Platform.runLater(() -> {
-                    System.out.println("Codename: " + codename); // DEBUGGING
-                    if (teamColor.equals("g")) { // If the text field is a green player
-                        System.out.println("Updating UI for green player"); // DEBUGGING
-                        if (!codename.isEmpty()) { // If the codename is not empty, set the codename to the one in the database
-                            textFieldRow[1].setText(codename); // Set the codename on the table to the stored codename
-                            textFieldRow[1].requestFocus(); // Move the focus to the codename text field
-                        }
-                        initialScreenModel.setIDOfGreenPlayer(row, column, id);
-                        initialScreenModel.setCodenameOfGreenPlayer(row, column, codename);
-                    } else if (teamColor.equals("r")) { // If the text field is a red player
-                        System.out.println("Updating UI for red player"); // DEBUGGING
-                        if (!codename.isEmpty()) { // If the codename is not empty, set the codename to the one in the database
-                            textFieldRow[1].setText(codename); // Set the codename on the table to the stored codename
-                            textFieldRow[1].requestFocus(); // Move the focus to the codename text field
-                        }
-                        initialScreenModel.setIDOfRedPlayer(row, column, id);
-                        initialScreenModel.setCodenameOfRedPlayer(row, column, codename);
-                    }
-                });
-            });
-        return;
-     }
+					// If the text field is a red player
+					} else if (teamColor.equals("r")) { 
+						if (!codename.isEmpty() && textFieldRow[1].getText().isEmpty()) { // If the codename is not empty, set the codename to the one in the database
+							// Create a new TextField
+							TextField newTextField = new TextField(codename);
+							// Copy properties from the old TextField
+							newTextField.setId(textFieldRow[1].getId());
+							newTextField.setStyle(textFieldRow[1].getStyle());
+							newTextField.setPrefWidth(textFieldRow[1].getPrefWidth());
+							newTextField.setPrefHeight(textFieldRow[1].getPrefHeight());
+							newTextField.setMinWidth(textFieldRow[1].getMinWidth());
+							newTextField.setMinHeight(textFieldRow[1].getMinHeight());
+							newTextField.setMaxWidth(textFieldRow[1].getMaxWidth());
+							newTextField.setMaxHeight(textFieldRow[1].getMaxHeight());
+							newTextField.setLayoutX(textFieldRow[1].getLayoutX());
+							newTextField.setLayoutY(textFieldRow[1].getLayoutY());
+							newTextField.setAlignment(textFieldRow[1].getAlignment());
+							newTextField.setFocusTraversable(true);
+							// Replace the old TextField with the new one in the parent
+							Parent parent = textFieldRow[1].getParent();
+							if (parent instanceof GridPane) {
+								GridPane gridPane = (GridPane) parent;
+								int colIndex = GridPane.getColumnIndex(textFieldRow[1]);
+								int rowIndex = GridPane.getRowIndex(textFieldRow[1]);
+								// Find the index of the old TextField in the children list
+								int oldIndex = gridPane.getChildren().indexOf(textFieldRow[1]);
+								gridPane.getChildren().remove(textFieldRow[1]);
+								// Add the new TextField at the same indexes
+								gridPane.getChildren().add(oldIndex, newTextField);
+								GridPane.setColumnIndex(newTextField, colIndex);
+								GridPane.setRowIndex(newTextField, rowIndex);
+								// Update the reference in the array
+								textFieldRow[1] = newTextField; 
+								// Set focus to the new TextField
+								newTextField.requestFocus();
+								// gridPane.setFocusTraversable(true);
+								// gridPane.getChildren().forEach(node -> node.setFocusTraversable(true));
 
-        if (column == 1 && textFieldRow[column].getText().isEmpty()) {
-            System.out.println("Codename is empty");
-            return;
-        } else if (column == 1) {
-            String inputCodename = textFieldRow[column].getText();
-            if (teamColor.equals("g")) {
-                if (inputCodename.matches(safePattern)) {
-                    initialScreenModel.setCodenameOfGreenPlayer(row, column, inputCodename);
-                } else {
-                    textFieldRow[column].setText("");
-                    System.out.println("Unsafe green team input detected at [" + column + "][" + row + "]. Input cleared.");
-                }
-            } else if (teamColor.equals("r")) {
-                if (inputCodename.matches(safePattern)) {
-                    initialScreenModel.setCodenameOfRedPlayer(row, column, inputCodename);
-                } else {
-                    textFieldRow[column].setText("");
-                    System.out.println("Unsafe red team input detected at [" + column + "][" + row + "]. Input cleared.");
-                }
-            }
+							}
+						}
+						initialScreenModel.setIDOfRedPlayer(row, column, id);
+						initialScreenModel.setCodenameOfRedPlayer(row, column, codename);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+			return;
+		}
+		if (column == 1 && textFieldRow[column].getText().isEmpty()) {
+			System.out.println("Codename is empty");
+			return;
+		} else if (column == 1) {
+			String inputCodename = textFieldRow[column].getText();
+			if (teamColor.equals("g")) {
+				if (inputCodename.matches(safePattern)) {
+					initialScreenModel.setCodenameOfGreenPlayer(row, column, inputCodename);
+				} else {
+					textFieldRow[column].setText("");
+					System.out.println("Unsafe green team input detected at [" + column + "][" + row + "]. Input cleared.");
+				}
+			} else if (teamColor.equals("r")) {
+				if (inputCodename.matches(safePattern)) {
+					initialScreenModel.setCodenameOfRedPlayer(row, column, inputCodename);
+				} else {
+					textFieldRow[column].setText("");
+					System.out.println("Unsafe red team input detected at [" + column + "][" + row + "]. Input cleared.");
+				}
+			}
 
-        }
-    }
-
+		}
+	}
     //*******************************************************************************************
     // applyNumericConstraint
     // Description: Applies a numeric constraint to the id column text fields. Doing this disallows
@@ -193,6 +258,22 @@ public class InitialScreenController {
         });
         initialScreenTextField.setTextFormatter(textFormatter);
     }
+
+
+	//*******************************************************************************************
+	// applyTextConstraint
+	// Description: Applies a text constraint to the codename column text fields. Doing this disallows
+	//              the user from entering anything other than letters, numbers, spaces, periods, underscores, and hyphens.
+	//*******************************************************************************************
+	private void applyTextConstraint(TextField initialScreenTextField) {
+		TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+			if (change.getControlNewText().matches("^[a-zA-Z0-9\\s]*$")) {
+				return change;
+			}
+			return null;
+		});
+		initialScreenTextField.setTextFormatter(textFormatter);
+	}
 
     private void printInputtedPlayers(){
         System.out.println("Printing inputted players");

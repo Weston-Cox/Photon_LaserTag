@@ -60,8 +60,8 @@
                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="g_0_1" alignment="CENTER" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="g_1_1" alignment="CENTER" text="Willy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="g_0_1" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="g_1_1" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="g_0_2" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                         <TextField fx:id="g_1_2" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="g_0_3" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
@@ -135,8 +135,8 @@
                            <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="r_0_1" alignment="CENTER" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="r_1_1" alignment="CENTER" text="Willy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="r_0_1" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="r_1_1" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="r_0_2" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                         <TextField fx:id="r_1_2" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="r_0_3" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="3" />
