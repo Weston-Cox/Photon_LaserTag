@@ -207,9 +207,6 @@ public class InitialScreenController {
 								textFieldRow[1] = newTextField; 
 								// Set focus to the new TextField
 								newTextField.requestFocus();
-								// gridPane.setFocusTraversable(true);
-								// gridPane.getChildren().forEach(node -> node.setFocusTraversable(true));
-
 							}
 						}
 						initialScreenModel.setIDOfRedPlayer(row, column, id);

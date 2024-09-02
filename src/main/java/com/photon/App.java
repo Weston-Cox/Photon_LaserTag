@@ -24,6 +24,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         postgreObj = PostgreSQL.getInstance();
         scene = new Scene(loadFXML("InitialScreen"), 900, 720);
+        scene.getStylesheets().add(getClass().getResource("PhotonFX.css").toExternalForm());
         stage.setScene(scene);
         stage.setResizable(true);
         stage.show();
