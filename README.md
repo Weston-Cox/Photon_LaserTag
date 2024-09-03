@@ -30,7 +30,7 @@ Before you begin, ensure you have the following installed on your system:
 
 - **[Java Development Kit (JDK)](https://www.oracle.com/java/technologies/downloads/#jdk21-windows)**: Version 21
 - **[Apache Maven](https://maven.apache.org/download.cgi)**: For project build management
-- **PostgreSQL**: For database management
+- **PostgreSQL**: For database management (This program uses a VM that runs the PostgreSQL Database)
 
 ### Steps
 
