@@ -28,8 +28,8 @@ The Photon Laser Tag Java application serves as the main software for managing a
 
 Before you begin, ensure you have the following installed on your system:
 
-- **Java Development Kit (JDK)**: Version 8 or higher
-- **Apache Maven**: For project build management
+- **[Java Development Kit (JDK)](https://www.oracle.com/java/technologies/downloads/#jdk21-windows)**: Version 21
+- **[Apache Maven](https://maven.apache.org/download.cgi)**: For project build management
 - **PostgreSQL**: For database management
 
 ### Steps
