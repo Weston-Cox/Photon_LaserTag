@@ -1,6 +1,4 @@
-package com.photon.DB;
-
-import com.photon.Helpers.Team;
+package com.photon.Helpers;
 
 public class Player {
     private String codename;
@@ -15,7 +13,7 @@ public class Player {
 
 
     public String getCodename() {
-        return codename;
+        return this.codename;
     }
 
     public void setCodename(String codename) {
@@ -23,7 +21,7 @@ public class Player {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -31,7 +29,7 @@ public class Player {
     }
 
     public Team getTeam() {
-        return team;
+        return this.team;
     }
 
     public void setTeam(String team) {

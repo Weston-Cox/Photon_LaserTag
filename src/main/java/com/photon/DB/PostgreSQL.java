@@ -15,7 +15,7 @@ public class PostgreSQL {
 
     public PostgreSQL() {
         // PostgreSQL Database credentials
-        this.url = "jdbc:postgresql://10.35.103.48:5432/photon";
+        this.url = "jdbc:postgresql://127.0.0.1:5432/photon";
         this.user = "student";
         this.password = "student";
         this.conn = null;
@@ -49,12 +49,27 @@ public class PostgreSQL {
         return instance;
     }
 
+    //*******************************************************************************************
+    // closeConnection
+    // Description: Closes the connection to the PostgreSQL database
+    //*******************************************************************************************
+    public void closeConnection() throws SQLException{
+        try {
+            if (this.conn != null) {
+                this.conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 //*******************************************************************************************
 //! PRIVATE METHODS !//
 //*******************************************************************************************
     private boolean CreateDBConnection() {
         boolean returnVal = false;
+        System.out.println(this.url + " " + this.user + " " + this.password);
 
         try {
             // Load PostgreSQL JDBC Driver
@@ -78,25 +93,8 @@ public class PostgreSQL {
 //*******************************************************************************************
 // GETTERS AND SETTERS
 //*******************************************************************************************
-    public Connection getConnection() {
-        try {
-            if (this.conn == null || this.conn.isClosed()) {
-                CreateDBConnection();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public Connection getConnection() throws SQLException {
         return this.conn;
     }
 
-    public void closeConnection() {
-        try {
-            if (this.conn != null && !this.conn.isClosed()) {
-                this.conn.close();
-                System.out.println("PostgreSQL connection closed.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

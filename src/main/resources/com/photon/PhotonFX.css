@@ -1,0 +1,10 @@
+.textfield {
+	-fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+}
+
+.textfield:focused {
+	border: none;
+	-fx-border: none;
+	-fx-focus-color: transparent; /* Ensure focus color is transparent */
+	-fx-faint-focus-color: transparent; /* Ensure faint focus color is transparent */
+}
