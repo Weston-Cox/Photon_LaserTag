@@ -50,16 +50,6 @@ Before you begin, ensure you have the following installed on your system:
 ### Usage
 
 * Before attempting to run the application, start the virtual machine.
-  1. Within the virtual machine, type the following command in the terminal to grab the IP address.
-     ```bash
-     hostname -I
-     ```
-      This command should list the IPv4 and the IPv6 addresses. **Copy the IPv4 address**
-
-  2. **[SUBJECT TO CHANGE]** Now inside the project itself, navigate to the PostgreSQL.java file _(src/main/java/com/photon/DB/PostgreSQL.java)_
-     
-     Inside the constructor of the PostgreSQL class, change the IP address in the url to the IP address you copied from the virtual machine.
-     ![image](https://github.com/user-attachments/assets/520d0553-85fd-48f8-b50d-c90153ec9d7c)
 
 * To run the application, use the following command:
 
