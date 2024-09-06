@@ -67,7 +67,7 @@ Before you begin, ensure you have the following installed on your system:
   mvn exec:java
   ```
 ## Contributors
-  - **Cole Blankenship**
-  - **Eric Giangiulio**
-  - **Tyler Hannon**
-  - **Weston Cox**
+  - **[Cole Blankenship](https://github.com/Cole-Blankenship)**
+  - **[Eric Giangiulio](https://github.com/ericgiang)**
+  - **[Tyler Hannon](https://github.com/Tyler-Hannon)**
+  - **[Weston Cox](https://github.com/Weston-Cox)**
