@@ -1,43 +1,47 @@
 package com.photon.DB;
 
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.io.IOException;
 
 public class UDPSocket {
-    public static void main(String[] args) throws Exception {
-        DatagramSocket socket = new DatagramSocket(9876); // UDP socket on port 9876
-        byte[] receiveData = new byte[1024];
-        byte[] sendData;
+    private DatagramSocket socket;
+    private InetAddress address;
+    private int port;
 
-        while (true) {
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            System.out.println("Waiting for a client to send data...");
-            socket.receive(receivePacket);
-            String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
-            System.out.println("Received: " + sentence);
+    public UDPSocket(String address, int port) throws IOException {
+        this.address = InetAddress.getByName(address);
+        this.port = port;
+        this.socket = new DatagramSocket();
+    }
 
-            // Process the received data (for example, you can call your PlayerDAO here)
-            // Assuming sentence is something like "create|1|codename"
-            String[] tokens = sentence.split("\\|");
+    public void send(String message) throws IOException {
+        byte[] buffer = message.getBytes();
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+        socket.send(packet);
+    }
 
-            if (tokens[0].equals("create")) {
-                int id = Integer.parseInt(tokens[1]);
-                String codename = tokens[2];
+    public String receive() throws IOException {
+        byte[] buffer = new byte[1024];
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+        socket.receive(packet);
+        return new String(packet.getData(), 0, packet.getLength());
+    }
 
-                PostgreSQL postgreSQL = PostgreSQL.getInstance();
-                PlayerDAO playerDAO = new PlayerDAO(postgreSQL);
-                boolean success = playerDAO.createPlayer(id, codename);
+    public void close() {
+        socket.close();
+    }
 
-                sendData = ("Player creation " + (success ? "succeeded" : "failed")).getBytes();
-            } else {
-                sendData = "Invalid command".getBytes();
-            }
-
-            InetAddress clientAddress = receivePacket.getAddress();
-            int clientPort = receivePacket.getPort();
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, clientAddress, clientPort);
-            socket.send(sendPacket);
+    public static void main(String[] args) {
+        try {
+            UDPSocket udpSocket = new UDPSocket("localhost", 9876);
+            udpSocket.send("Hello, World!");
+            String response = udpSocket.receive();
+            System.out.println("Received: " + response);
+            udpSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
