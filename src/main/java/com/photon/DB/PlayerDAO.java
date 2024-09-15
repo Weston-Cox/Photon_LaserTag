@@ -1,16 +1,14 @@
 package com.photon.DB;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.photon.Helpers.Player;
-
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.SQLException;
 
 public class PlayerDAO {
     private Connection connection;
@@ -88,5 +86,19 @@ public class PlayerDAO {
             return false;
         }
         return true;
+    }
+
+    public Integer findIDByName(String name) {
+        String query = "SELECT id FROM players WHERE codename = ?";
+        try (PreparedStatement stmt = this.connection.prepareStatement(query)) {
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

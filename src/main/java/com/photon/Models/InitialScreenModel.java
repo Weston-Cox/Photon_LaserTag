@@ -1,17 +1,26 @@
 package com.photon.Models;
 
+import java.io.IOException;
+
 import com.photon.DB.PlayerDAO;
-import com.photon.DB.PostgreSQL;
+import com.photon.DB.UDPSocket;
 import com.photon.Helpers.Player;
 
 public class InitialScreenModel {
     private Player greenPlayers[][] = new Player[2][15];
     private Player redPlayers[][] = new Player[2][15];
     private PlayerDAO playerDAO;
+    private UDPSocket udpSocket;
 
 
-    public InitialScreenModel(PostgreSQL postgreSQL) {
-        this.playerDAO = new PlayerDAO(postgreSQL);
+    public InitialScreenModel(PlayerDAO playerDAO, String udpAddress, int broadcastPort, int receivePort) {
+        this.playerDAO = playerDAO;
+        try {
+            this.udpSocket = new UDPSocket(udpAddress, broadcastPort, receivePort);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // Initialize the greenPlayers and redPlayers arrays
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 15; j++) {
@@ -36,13 +45,42 @@ public class InitialScreenModel {
     }
 
 
+    // Functions to communitcate with the server using the UPD socket to store and retrieve player information
     public boolean storePlayer(int id, String codename) {
-        if (this.playerDAO.updatePlayerInfo(id, codename)) { // Trys to update the player info
-            return true;
-        } else { // If it can't update the player info, then it creates a new player
-            return this.playerDAO.createPlayer(id, codename);
+        try {
+            String message = "STORE " + id + " " + codename;
+            udpSocket.broadcast(message);
+            String response = udpSocket.receive();
+            if ("SUCCESS".equals(response)) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return false;
     }
+
+    public Integer getIDByName(String name) {
+        try {
+            String message = "CHECK " + name;
+            udpSocket.broadcast(message);
+            String response = udpSocket.receive();
+            if (!"NOT_FOUND".equals(response)) {
+                return Integer.parseInt(response);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // public boolean storePlayer(int id, String codename) {
+    //     if (this.playerDAO.updatePlayerInfo(id, codename)) { // Trys to update the player info
+    //         return true;
+    //     } else { // If it can't update the player info, then it creates a new player
+    //         return this.playerDAO.createPlayer(id, codename);
+    //     }
+    // }
 
 
 

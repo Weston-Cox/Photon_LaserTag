@@ -1,47 +1,61 @@
 package com.photon.DB;
 
-import java.net.DatagramSocket;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 public class UDPSocket {
-    private DatagramSocket socket;
+    private DatagramSocket broadcastSocket;
+    private DatagramSocket receiveSocket;
     private InetAddress address;
-    private int port;
+    private int broadcastPort;
+    private int receivePort;
 
-    public UDPSocket(String address, int port) throws IOException {
+    public UDPSocket(String address, int broadcastPort, int receivePort) throws IOException {
         this.address = InetAddress.getByName(address);
-        this.port = port;
-        this.socket = new DatagramSocket();
+        this.broadcastPort = broadcastPort;
+        this.receivePort = receivePort;
+        this.broadcastSocket = new DatagramSocket();
+        this.receiveSocket = new DatagramSocket(receivePort);
     }
 
-    public void send(String message) throws IOException {
+    public void broadcast(String message) throws IOException {
         byte[] buffer = message.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
-        socket.send(packet);
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, broadcastPort);
+        broadcastSocket.send(packet);
     }
 
     public String receive() throws IOException {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-        socket.receive(packet);
+        receiveSocket.receive(packet);
         return new String(packet.getData(), 0, packet.getLength());
     }
 
     public void close() {
-        socket.close();
+        broadcastSocket.close();
+        receiveSocket.close();
     }
 
-    public static void main(String[] args) {
-        try {
-            UDPSocket udpSocket = new UDPSocket("localhost", 9876);
-            udpSocket.send("Hello, World!");
-            String response = udpSocket.receive();
-            System.out.println("Received: " + response);
-            udpSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static void main(String[] args) throws IOException {
+        // Initialize database connection
+        PostgreSQL postgreSQL = new PostgreSQL("database_url", "username", "password");
+        PlayerDAO playerDAO = new PlayerDAO(postgreSQL);
+
+        UDPSocket udpSocket = new UDPSocket("localhost", 7500, 7501);
+
+        while (true) {
+            String receivedData = udpSocket.receive();
+            String[] parts = receivedData.split(":");
+            int transmittingPlayerId = Integer.parseInt(parts[0]);
+            int hitPlayerId = Integer.parseInt(parts[1]);
+
+            // Process the received data
+            System.out.println("Player " + transmittingPlayerId + " hit player " + hitPlayerId);
+
+            // Broadcast the hit player id
+            udpSocket.broadcast(String.valueOf(hitPlayerId));
         }
     }
 }

@@ -1,5 +1,11 @@
 package com.photon;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import com.photon.DB.PostgreSQL;
+import com.photon.UI.InitialScreenController;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -9,17 +15,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.sql.SQLException;
-
-import com.photon.DB.PostgreSQL;
-import com.photon.UI.InitialScreenController;
-
-import java.io.IOException;
-
 public class App extends Application {
 
     private static Scene scene;
     private static PostgreSQL postgreObj;
+    private static final String UDP_ADDRESS = "jdbc:postgresql://127.0.0.1:5432/photon";
+    private static final int BROADCAST_PORT = 7500;
+    private static final int RECEIVE_PORT = 7501;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -85,7 +87,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         fxmlLoader.setControllerFactory(param -> { // Dependency Injection of postgreSQL object
             if (param == InitialScreenController.class) {
-                return new InitialScreenController(postgreObj);
+                return new InitialScreenController(postgreObj, UDP_ADDRESS, BROADCAST_PORT, RECEIVE_PORT);
             } else {
                 try {
                     return param.getConstructor().newInstance();
