@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import com.photon.DB.PlayerDAO;
 import com.photon.DB.PostgreSQL;
 import com.photon.Models.InitialScreenModel;
 
@@ -33,9 +32,8 @@ public class InitialScreenController {
     private Map<Integer, TextField[]> greenPlayers = new HashMap<>();
     private Map<Integer, TextField[]> redPlayers = new HashMap<>();
 
-    public InitialScreenController(PostgreSQL postgreSQL, String udpAddress, int broadcastPort, int receivePort) {
-        PlayerDAO playerDAO = new PlayerDAO(postgreSQL);
-        this.initialScreenModel = new InitialScreenModel(playerDAO, udpAddress, broadcastPort, receivePort);
+    public InitialScreenController(PostgreSQL postgreSQL) {
+        this.initialScreenModel = new InitialScreenModel(postgreSQL); // Dependency Injection
     }
 
     //*******************************************************************************************

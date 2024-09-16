@@ -87,18 +87,4 @@ public class PlayerDAO {
         }
         return true;
     }
-
-    public Integer findIDByName(String name) {
-        String query = "SELECT id FROM players WHERE codename = ?";
-        try (PreparedStatement stmt = this.connection.prepareStatement(query)) {
-            stmt.setString(1, name);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
