@@ -4,18 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
 import com.photon.DB.PostgreSQL;
 import com.photon.Models.InitialScreenModel;
 
@@ -189,6 +184,7 @@ public class InitialScreenController {
 						}
 						initialScreenModel.setIDOfGreenPlayer(row, column, id);
 						initialScreenModel.setCodenameOfGreenPlayer(row, column, codename);
+						initialScreenModel.setEquipmentIDOfGreenPlayer(row, column, -1); //TODO DYNAMICALLY SET THE EQUIPMENT ID
 						initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
 
 					// If the text field is a red player
@@ -231,6 +227,7 @@ public class InitialScreenController {
 						}
 						initialScreenModel.setIDOfRedPlayer(row, column, id);
 						initialScreenModel.setCodenameOfRedPlayer(row, column, codename);
+						initialScreenModel.setEquipmentIDOfRedPlayer(row, column, -1); //TODO DYNAMICALLY SET THE EQUIPMENT ID
 						initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
 					}
 				} catch (Exception e) {
@@ -301,8 +298,4 @@ public class InitialScreenController {
 		initialScreenTextField.setTextFormatter(textFormatter);
 	}
 
-    private void printInputtedPlayers(){
-        System.out.println("Printing inputted players");
-        // WILL BE IMPLEMENTED SOON
-    }
 }

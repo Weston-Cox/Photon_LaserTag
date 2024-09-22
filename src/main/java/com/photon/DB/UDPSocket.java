@@ -38,24 +38,24 @@ public class UDPSocket {
         receiveSocket.close();
     }
 
-    public static void main(String[] args) throws IOException {
-        // Initialize database connection
-        PostgreSQL postgreSQL = new PostgreSQL("database_url", "username", "password");
-        PlayerDAO playerDAO = new PlayerDAO(postgreSQL);
+    // public static void main(String[] args) throws IOException {
+    //     // Initialize database connection
+    //     PostgreSQL postgreSQL = new PostgreSQL("database_url", "username", "password");
+    //     PlayerDAO playerDAO = new PlayerDAO(postgreSQL);
 
-        UDPSocket udpSocket = new UDPSocket("localhost", 7500, 7501);
+    //     UDPSocket udpSocket = new UDPSocket("localhost", 7500, 7501);
+        
+    //     while (true) {
+    //         String receivedData = udpSocket.receive();
+    //         String[] parts = receivedData.split(":");
+    //         int transmittingPlayerId = Integer.parseInt(parts[0]);
+    //         int hitPlayerId = Integer.parseInt(parts[1]);
 
-        while (true) {
-            String receivedData = udpSocket.receive();
-            String[] parts = receivedData.split(":");
-            int transmittingPlayerId = Integer.parseInt(parts[0]);
-            int hitPlayerId = Integer.parseInt(parts[1]);
+    //         // Process the received data
+    //         System.out.println("Player " + transmittingPlayerId + " hit player " + hitPlayerId);
 
-            // Process the received data
-            System.out.println("Player " + transmittingPlayerId + " hit player " + hitPlayerId);
-
-            // Broadcast the hit player id
-            udpSocket.broadcast(String.valueOf(hitPlayerId));
-        }
-    }
+    //         // Broadcast the hit player id
+    //         udpSocket.broadcast(String.valueOf(hitPlayerId));
+    //     }
+    // }
 }

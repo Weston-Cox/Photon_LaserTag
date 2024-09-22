@@ -4,11 +4,16 @@ public class Player {
     private String codename;
     private int id;
     private Team team;
+    private int equipmentID;
 
-    public Player(String codename, int id, String team) {
+
+
+
+    public Player(String codename, int id, String team, int equipmnetId) {
         this.codename = codename;
         this.id = id;
         this.team = Team.getTeam(team);
+        this.equipmentID = equipmnetId;
     }
 
 
@@ -34,5 +39,13 @@ public class Player {
 
     public void setTeam(String team) {
         this.team = Team.getTeam(team);
+    }
+
+    public int getEquipmentID() {
+        return equipmentID;
+    }
+
+    public void setEquipmentID(int equipmentID) {
+        this.equipmentID = equipmentID;
     }
 }
