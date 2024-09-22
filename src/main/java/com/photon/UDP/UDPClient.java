@@ -20,7 +20,6 @@ public class UDPClient {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        // address = InetAddress.getByName("192.168.0.131");
     }
 
     public void send(String message) throws IOException {
