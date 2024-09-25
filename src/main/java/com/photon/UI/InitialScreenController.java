@@ -149,19 +149,10 @@ public class InitialScreenController {
 						if (!codename.isEmpty() && textFieldRow[1].getText().isEmpty()) { // If the codename is not empty, set the codename to the one in the database
 							// Create a new TextField
 							TextField newTextField = new TextField(codename);
+							// Grab the old TextField
+							TextField oldTextField = textFieldRow[1];
 							// Copy properties from the old TextField
-							newTextField.setId(textFieldRow[1].getId());
-							newTextField.setStyle(textFieldRow[1].getStyle());
-							newTextField.setPrefWidth(textFieldRow[1].getPrefWidth());
-							newTextField.setPrefHeight(textFieldRow[1].getPrefHeight());
-							newTextField.setMinWidth(textFieldRow[1].getMinWidth());
-							newTextField.setMinHeight(textFieldRow[1].getMinHeight());
-							newTextField.setMaxWidth(textFieldRow[1].getMaxWidth());
-							newTextField.setMaxHeight(textFieldRow[1].getMaxHeight());
-							newTextField.setLayoutX(textFieldRow[1].getLayoutX());
-							newTextField.setLayoutY(textFieldRow[1].getLayoutY());
-							newTextField.setAlignment(textFieldRow[1].getAlignment());
-							newTextField.setFocusTraversable(true);
+							newTextField = copyOldTFProperties(newTextField, oldTextField);
 							// Replace the old TextField with the new one in the parent
 							Parent parent = textFieldRow[1].getParent();
 							if (parent instanceof GridPane) {
@@ -192,19 +183,10 @@ public class InitialScreenController {
 						if (!codename.isEmpty() && textFieldRow[1].getText().isEmpty()) { // If the codename is not empty, set the codename to the one in the database
 							// Create a new TextField
 							TextField newTextField = new TextField(codename);
+							// Grab the old TextField
+							TextField oldTextField = textFieldRow[1];
 							// Copy properties from the old TextField
-							newTextField.setId(textFieldRow[1].getId());
-							newTextField.setStyle(textFieldRow[1].getStyle());
-							newTextField.setPrefWidth(textFieldRow[1].getPrefWidth());
-							newTextField.setPrefHeight(textFieldRow[1].getPrefHeight());
-							newTextField.setMinWidth(textFieldRow[1].getMinWidth());
-							newTextField.setMinHeight(textFieldRow[1].getMinHeight());
-							newTextField.setMaxWidth(textFieldRow[1].getMaxWidth());
-							newTextField.setMaxHeight(textFieldRow[1].getMaxHeight());
-							newTextField.setLayoutX(textFieldRow[1].getLayoutX());
-							newTextField.setLayoutY(textFieldRow[1].getLayoutY());
-							newTextField.setAlignment(textFieldRow[1].getAlignment());
-							newTextField.setFocusTraversable(true);
+							newTextField = copyOldTFProperties(newTextField, oldTextField);
 							// Replace the old TextField with the new one in the parent
 							Parent parent = textFieldRow[1].getParent();
 							if (parent instanceof GridPane) {
@@ -296,6 +278,23 @@ public class InitialScreenController {
 			return null;
 		});
 		initialScreenTextField.setTextFormatter(textFormatter);
+	}
+
+
+	private TextField copyOldTFProperties(TextField newTextField, TextField oldTextField) {
+		newTextField.setId(oldTextField.getId());
+		newTextField.setStyle(oldTextField.getStyle());
+		newTextField.setPrefWidth(oldTextField.getPrefWidth());
+		newTextField.setPrefHeight(oldTextField.getPrefHeight());
+		newTextField.setMinWidth(oldTextField.getMinWidth());
+		newTextField.setMinHeight(oldTextField.getMinHeight());
+		newTextField.setMaxWidth(oldTextField.getMaxWidth());
+		newTextField.setMaxHeight(oldTextField.getMaxHeight());
+		newTextField.setLayoutX(oldTextField.getLayoutX());
+		newTextField.setLayoutY(oldTextField.getLayoutY());
+		newTextField.setAlignment(oldTextField.getAlignment());
+		newTextField.setFocusTraversable(true);
+		return newTextField;
 	}
 
 }
