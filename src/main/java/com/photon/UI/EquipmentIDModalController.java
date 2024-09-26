@@ -9,6 +9,8 @@ public class EquipmentIDModalController {
     @FXML
     private TextField tfEquipmentID;
 
+    private String equipmentID;
+
     private Stage dialogStage;
     private boolean submitClicked = false;
 
@@ -23,6 +25,7 @@ public class EquipmentIDModalController {
     @FXML
     private void submit() {
         submitClicked = true;
+        this.equipmentID = tfEquipmentID.getText();
         dialogStage.close();
     }
 
@@ -32,6 +35,6 @@ public class EquipmentIDModalController {
     }
 
     public String getEquipmentID() {
-        return tfEquipmentID.getText();
+        return this.equipmentID;
     }
 }

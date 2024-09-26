@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="250.0" prefWidth="300.0" spacing="10" style="-fx-background-color: black;" stylesheets="@PhotonFX.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.photon.EquipmentIDModalController">
+<VBox alignment="CENTER" prefHeight="250.0" prefWidth="300.0" spacing="10" style="-fx-background-color: black;" stylesheets="@PhotonFX.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.photon.UI.EquipmentIDModalController">
     <Label text="Enter Equipment Number" textFill="WHITE">
       <font>
          <Font name="System Bold" size="12.0" />
       </font></Label>
-    <TextField fx:id="playerNameField" alignment="CENTER" prefHeight="25.0" promptText="Equipment #">
+    <TextField fx:id="tfEquipmentID" alignment="CENTER" prefHeight="25.0" promptText="Equipment #">
       <opaqueInsets>
          <Insets />
       </opaqueInsets>

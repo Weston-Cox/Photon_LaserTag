@@ -36,7 +36,6 @@ public class InitialScreenModel {
     // Description: Returns the codename of a player with a given ID
     //*******************************************************************************************
     public String getCodenameOfExistingID(int id) {
-        System.out.println("ID: " + id + " DEBUGGING");
         Player player = this.playerDAO.findPlayerByID(id);
         if (player != null) {
             return player.getCodename();
