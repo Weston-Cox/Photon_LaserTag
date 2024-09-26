@@ -329,6 +329,10 @@ public class InitialScreenController {
 	}
 
 
+	//*******************************************************************************************
+	// copyOldTFProperties
+	// Description: Copies the properties of an old TextField to a new TextField
+	//*******************************************************************************************
 	private TextField copyOldTFProperties(TextField newTextField, TextField oldTextField) {
 		newTextField.setId(oldTextField.getId());
 		newTextField.setStyle(oldTextField.getStyle());
