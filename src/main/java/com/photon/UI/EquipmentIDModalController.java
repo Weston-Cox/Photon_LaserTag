@@ -2,6 +2,7 @@ package com.photon.UI;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 
 public class EquipmentIDModalController {
@@ -14,6 +15,21 @@ public class EquipmentIDModalController {
     private Stage dialogStage;
     private boolean submitClicked = false;
 
+    @FXML
+    private void initialize() {
+        applyNumericConstraint(tfEquipmentID);
+        // Add an event listener for the Enter key.
+        tfEquipmentID.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case ENTER:
+                    submit();
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
@@ -24,8 +40,12 @@ public class EquipmentIDModalController {
 
     @FXML
     private void submit() {
-        submitClicked = true;
         this.equipmentID = tfEquipmentID.getText();
+        if (this.equipmentID.isEmpty()){
+            tfEquipmentID.getStyleClass().add("textfield-error");
+            return;
+        }
+        submitClicked = true;
         dialogStage.close();
     }
 
@@ -36,5 +56,20 @@ public class EquipmentIDModalController {
 
     public String getEquipmentID() {
         return this.equipmentID;
+    }
+
+    //*******************************************************************************************
+    // applyNumericConstraint
+    // Description: Applies a numeric constraint to the id column text fields. Doing this disallows
+    //              the user from entering anything other than numbers.
+    //*******************************************************************************************
+    private void applyNumericConstraint(TextField initialScreenTextField) {
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches("\\d*")) {
+                return change;
+            }
+            return null;
+        });
+        initialScreenTextField.setTextFormatter(textFormatter);
     }
 }
