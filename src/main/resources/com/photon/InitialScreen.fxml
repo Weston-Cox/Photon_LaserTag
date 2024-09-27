@@ -16,7 +16,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" style="-fx-background-color: #2b2b2b;" stylesheets="@PhotonFX.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.photon.UI.InitialScreenController">
+<VBox fx:id="rootPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" style="-fx-background-color: #2b2b2b;" stylesheets="@PhotonFX.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.photon.UI.InitialScreenController">
    <children>
       <HBox alignment="CENTER" layoutX="25.0" layoutY="25.0" prefHeight="646.0" prefWidth="1033.0" spacing="20.0" style="-fx-background-color: #2b2b2b;">
          <children>

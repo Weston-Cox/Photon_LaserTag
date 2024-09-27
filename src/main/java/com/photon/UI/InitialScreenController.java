@@ -6,7 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.application.Platform;
@@ -33,6 +36,9 @@ public class InitialScreenController {
 	private Button btnStartMatch;
 	@FXML
 	private Button btnClearInputs;
+
+	@FXML
+	private VBox rootPane;
 
 
     private Map<Integer, TextField[]> greenPlayers = new HashMap<>();
@@ -86,6 +92,8 @@ public class InitialScreenController {
 
         attachFocusLostListeners(greenPlayers);
         attachFocusLostListeners(redPlayers);
+
+		setupKeyEventHandler(); // Sets up a key event handler for the root pane
 
     }
 
@@ -278,6 +286,13 @@ public class InitialScreenController {
 			}
 		}
 		codenamePulledFromDB = false;
+	}
+
+	private void setupKeyEventHandler() {
+		rootPane.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+			if (event.getCode() == KeyCode.F12)
+				clearInputsBtnPressed();
+		});
 	}
 
 	//*******************************************************************************************
