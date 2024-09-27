@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -18,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.photon.DB.PostgreSQL;
 import com.photon.Models.InitialScreenModel;
+import com.photon.Helpers.TextFieldHelper;
 
 
 public class InitialScreenController {
@@ -94,8 +94,8 @@ public class InitialScreenController {
 
             final int row = i;
 
-            applyNumericConstraint(players.get(row)[0]);  // Applies a numeric contraint to the ID column text fields
-			applyTextConstraint(players.get(row)[1]); // Applies a text constraint to the codename column text fields            
+            TextFieldHelper.applyNumericConstraint(players.get(row)[0]);  // Applies a numeric contraint to the ID column text fields
+			TextFieldHelper.applyTextConstraint(players.get(row)[1]); // Applies a text constraint to the codename column text fields            
             players.get(row)[0].focusedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -122,7 +122,7 @@ public class InitialScreenController {
 		final int c = 1;
 		TextField emptyField = new TextField(); // Empty text field to act as a placeholder
 		emptyField.setId(teamColor);
-		applyTextConstraint(textFieldRow[1]); // Applies a text constraint to the codename column text fields
+		TextFieldHelper.applyTextConstraint(textFieldRow[1]); // Applies a text constraint to the codename column text fields
 		textFieldRow[1].focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -159,7 +159,7 @@ public class InitialScreenController {
 							TextField newTextField = new TextField(codename);
 							// Grab the old TextField
 							TextField oldTextField = textFieldRow[1];
-							newTextField = copyOldTFProperties(newTextField, oldTextField);
+							newTextField = TextFieldHelper.copyOldTFProperties(newTextField, oldTextField);
 							// Replace the old TextField with the new one in the parent
 							Parent parent = textFieldRow[1].getParent();
 							if (parent instanceof GridPane) {
@@ -194,7 +194,7 @@ public class InitialScreenController {
 							TextField newTextField = new TextField(codename);
 							// Grab the old TextField
 							TextField oldTextField = textFieldRow[1];
-							newTextField = copyOldTFProperties(newTextField, oldTextField);
+							newTextField = TextFieldHelper.copyOldTFProperties(newTextField, oldTextField);
 							// Replace the old TextField with the new one in the parent
 							Parent parent = textFieldRow[1].getParent();
 							if (parent instanceof GridPane) {
@@ -295,58 +295,4 @@ public class InitialScreenController {
 
 		return "-1";
     }
-
-
-    //*******************************************************************************************
-    // applyNumericConstraint
-    // Description: Applies a numeric constraint to the id column text fields. Doing this disallows
-    //              the user from entering anything other than numbers.
-    //*******************************************************************************************
-    private void applyNumericConstraint(TextField initialScreenTextField) {
-        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
-            if (change.getControlNewText().matches("\\d*")) {
-                return change;
-            }
-            return null;
-        });
-        initialScreenTextField.setTextFormatter(textFormatter);
-    }
-
-
-	//*******************************************************************************************
-	// applyTextConstraint
-	// Description: Applies a text constraint to the codename column text fields. Doing this disallows
-	//              the user from entering anything other than letters, numbers, spaces, periods, underscores, and hyphens.
-	//*******************************************************************************************
-	private void applyTextConstraint(TextField initialScreenTextField) {
-		TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
-			if (change.getControlNewText().matches("^[a-zA-Z0-9\\s]*$")) {
-				return change;
-			}
-			return null;
-		});
-		initialScreenTextField.setTextFormatter(textFormatter);
-	}
-
-
-	//*******************************************************************************************
-	// copyOldTFProperties
-	// Description: Copies the properties of an old TextField to a new TextField
-	//*******************************************************************************************
-	private TextField copyOldTFProperties(TextField newTextField, TextField oldTextField) {
-		newTextField.setId(oldTextField.getId());
-		newTextField.setStyle(oldTextField.getStyle());
-		newTextField.setPrefWidth(oldTextField.getPrefWidth());
-		newTextField.setPrefHeight(oldTextField.getPrefHeight());
-		newTextField.setMinWidth(oldTextField.getMinWidth());
-		newTextField.setMinHeight(oldTextField.getMinHeight());
-		newTextField.setMaxWidth(oldTextField.getMaxWidth());
-		newTextField.setMaxHeight(oldTextField.getMaxHeight());
-		newTextField.setLayoutX(oldTextField.getLayoutX());
-		newTextField.setLayoutY(oldTextField.getLayoutY());
-		newTextField.setAlignment(oldTextField.getAlignment());
-		newTextField.setFocusTraversable(true);
-		return newTextField;
-	}
-
 }

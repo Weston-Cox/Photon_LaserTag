@@ -2,8 +2,8 @@ package com.photon.UI;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
+import com.photon.Helpers.TextFieldHelper;
 
 public class EquipmentIDModalController {
 
@@ -17,7 +17,7 @@ public class EquipmentIDModalController {
 
     @FXML
     private void initialize() {
-        applyNumericConstraint(tfEquipmentID);
+        TextFieldHelper.applyNumericConstraint(tfEquipmentID);
         // Add an event listener for the Enter key.
         tfEquipmentID.setOnKeyPressed(event -> {
             switch (event.getCode()) {
@@ -56,20 +56,5 @@ public class EquipmentIDModalController {
 
     public String getEquipmentID() {
         return this.equipmentID;
-    }
-
-    //*******************************************************************************************
-    // applyNumericConstraint
-    // Description: Applies a numeric constraint to the id column text fields. Doing this disallows
-    //              the user from entering anything other than numbers.
-    //*******************************************************************************************
-    private void applyNumericConstraint(TextField initialScreenTextField) {
-        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
-            if (change.getControlNewText().matches("\\d*")) {
-                return change;
-            }
-            return null;
-        });
-        initialScreenTextField.setTextFormatter(textFormatter);
     }
 }
