@@ -15,7 +15,6 @@ public class UDPClient {
         socket = new DatagramSocket();
         try {
             InetAddress localhost = InetAddress.getLocalHost();
-
             this.address = localhost;
         } catch (UnknownHostException e) {
             e.printStackTrace();
