@@ -46,7 +46,7 @@ public class PostgreSQL {
         }
         return instance;
     }
-
+ 
     //*******************************************************************************************
     // closeConnection
     // Description: Closes the connection to the PostgreSQL database
