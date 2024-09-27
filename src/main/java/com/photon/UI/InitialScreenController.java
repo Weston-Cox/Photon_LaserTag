@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -27,6 +28,11 @@ public class InitialScreenController {
     private TextField g_0_1, g_1_1, g_0_2, g_1_2, g_0_3, g_1_3, g_0_4, g_1_4, g_0_5, g_1_5, g_0_6, g_1_6, g_0_7, g_1_7, g_0_8, g_1_8, g_0_9, g_1_9, g_0_10, g_1_10, g_0_11, g_1_11, g_0_12, g_1_12, g_0_13, g_1_13, g_0_14, g_1_14, g_0_15, g_1_15;
     @FXML
     private TextField r_0_1, r_1_1, r_0_2, r_1_2, r_0_3, r_1_3, r_0_4, r_1_4, r_0_5, r_1_5, r_0_6, r_1_6, r_0_7, r_1_7, r_0_8, r_1_8, r_0_9, r_1_9, r_0_10, r_1_10, r_0_11, r_1_11, r_0_12, r_1_12, r_0_13, r_1_13, r_0_14, r_1_14, r_0_15, r_1_15;
+
+	@FXML
+	private Button btnStartMatch;
+	@FXML
+	private Button btnClearInputs;
 
 
     private Map<Integer, TextField[]> greenPlayers = new HashMap<>();
@@ -82,6 +88,19 @@ public class InitialScreenController {
         attachFocusLostListeners(redPlayers);
 
     }
+
+	@FXML private void startMatchBtnPressed() {
+		initialScreenModel.printAllPlayers();
+	}
+
+	@FXML private void clearInputsBtnPressed() {
+		for (int i = 1; i <= greenPlayers.size(); i++) {
+			greenPlayers.get(i)[0].setText("");
+			greenPlayers.get(i)[1].setText("");
+			redPlayers.get(i)[0].setText("");
+			redPlayers.get(i)[1].setText("");
+		}
+	}
 
     //*******************************************************************************************
     // attachFocusLostListeners
@@ -180,10 +199,10 @@ public class InitialScreenController {
 								attachFocusLostListeners(textFieldRow, row, "g");
 							}
 
-							initialScreenModel.setCodenameOfGreenPlayer(row, column, codename);
+							initialScreenModel.setCodenameOfGreenPlayer(row, codename);
 							initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
 						}
-						initialScreenModel.setIDOfGreenPlayer(row, column, id);
+						initialScreenModel.setIDOfGreenPlayer(row, id);
 						return;
 
 					// If the text field is a red player
@@ -215,10 +234,10 @@ public class InitialScreenController {
 								attachFocusLostListeners(textFieldRow, row, "r");
 							}
 
-							initialScreenModel.setCodenameOfRedPlayer(row, column, codename);
+							initialScreenModel.setCodenameOfRedPlayer(row, codename);
 							initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
 						}
-						initialScreenModel.setIDOfRedPlayer(row, column, id);
+						initialScreenModel.setIDOfRedPlayer(row, id);
 						return;
 					}
 				} catch (Exception e) {
@@ -234,10 +253,10 @@ public class InitialScreenController {
 			System.out.println("Input codename: " + inputCodename);
 			if (teamColor.equals("g")) {
 				if (inputCodename.matches(safePattern)) {
-					initialScreenModel.setCodenameOfGreenPlayer(row, column, inputCodename);
+					initialScreenModel.setCodenameOfGreenPlayer(row, inputCodename);
 					if (!textFieldRow[0].getText().isEmpty()) { // If the ID text field is not empty, store the player
 						String equipmentID = showEquipmentIDModal((Stage) textFieldRow[column].getScene().getWindow());
-						initialScreenModel.setEquipmentIDOfGreenPlayer(row, column, Integer.parseInt(equipmentID));
+						initialScreenModel.setEquipmentIDOfGreenPlayer(row, Integer.parseInt(equipmentID));
 						initialScreenModel.storePlayer(Integer.parseInt(textFieldRow[0].getText()), inputCodename);
 					}
 				} else {
@@ -246,10 +265,10 @@ public class InitialScreenController {
 				}
 			} else if (teamColor.equals("r")) {
 				if (inputCodename.matches(safePattern)) {
-					initialScreenModel.setCodenameOfRedPlayer(row, column, inputCodename);
+					initialScreenModel.setCodenameOfRedPlayer(row, inputCodename);
 					if (!textFieldRow[0].getText().isEmpty()) { // If the ID text field is not empty, store the player
 						String equipmentID = showEquipmentIDModal((Stage) textFieldRow[column].getScene().getWindow());
-						initialScreenModel.setEquipmentIDOfRedPlayer(row, column, Integer.parseInt(equipmentID));
+						initialScreenModel.setEquipmentIDOfRedPlayer(row, Integer.parseInt(equipmentID));
 						initialScreenModel.storePlayer(Integer.parseInt(textFieldRow[0].getText()), inputCodename);
 					}
 				} else {

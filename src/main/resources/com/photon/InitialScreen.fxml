@@ -179,7 +179,7 @@
          <children>
             <ToolBar prefHeight="60.0" prefWidth="850.0" style="-fx-background-color: #2b2b2b;">
                <items>
-                  <Button mnemonicParsing="false" prefWidth="400.0" text="Start Match">
+                  <Button fx:id="btnStartMatch" onAction="#startMatchBtnPressed" mnemonicParsing="false" prefWidth="400.0" text="Start Match">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -194,7 +194,7 @@
                         </DropShadow>
                      </effect>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="400.0" text="Clear Inputs">
+                  <Button fx:id="btnClearInputs" onAction="#clearInputsBtnPressed" mnemonicParsing="false" prefHeight="29.0" prefWidth="400.0" text="Clear Inputs">
                      <font>
                         <Font size="14.0" />
                      </font>

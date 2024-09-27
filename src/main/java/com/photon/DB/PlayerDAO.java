@@ -31,7 +31,6 @@ public class PlayerDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 player = new Player(rs.getString("codename"), rs.getInt("id"), "u", -1);
-                System.out.println(player.getCodename()); //DEBUGGING
             }
         } catch (SQLException e) {
             e.printStackTrace();
