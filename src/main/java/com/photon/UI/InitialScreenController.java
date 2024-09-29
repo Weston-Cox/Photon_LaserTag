@@ -12,6 +12,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import com.photon.DB.PostgreSQL;
+import com.photon.Models.ActionScreenModel;
 import com.photon.Models.InitialScreenModel;
 import com.photon.Helpers.TextFieldHelper;
 
@@ -98,7 +102,52 @@ public class InitialScreenController {
     }
 
 	@FXML private void startMatchBtnPressed() {
-		initialScreenModel.printAllPlayers();
+		
+		Parent initialScreen = btnStartMatch.getScene().getRoot();
+		// Create the fade transition for the splash screen
+		FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), initialScreen);
+		fadeTransition.setFromValue(1.0);
+		fadeTransition.setToValue(0.0);
+		fadeTransition.setOnFinished(e -> {
+			try {
+				// Load the ActionScreen FXML
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/photon/ActionScreen.fxml"));
+				Parent actionScreen = loader.load();
+				actionScreen.setOpacity(0.0);
+	
+				// Get the controller and set the initialScreenModel
+				ActionScreenController controller = loader.getController();
+	
+				// Create ActionScreenModel with the same PostgreSQL object
+				ActionScreenModel actionScreenModel = new ActionScreenModel(initialScreenModel.getPostgreSQL());
+	
+				// Pass the Green and Red players to the ActionScreenModel
+				actionScreenModel.setGreenPlayers(initialScreenModel.getGreenPlayers());
+				actionScreenModel.setRedPlayers(initialScreenModel.getRedPlayers());
+	
+				// Set the ActionScreenModel in the controller
+				controller.setActionScreenModel(actionScreenModel);
+	
+				// Replace the current scene with the ActionScreen scene
+				Stage stage = (Stage) btnStartMatch.getScene().getWindow();
+				Scene scene = new Scene(actionScreen, 900, 720);
+				scene.getStylesheets().add(getClass().getResource("/com/photon/PhotonFX.css").toExternalForm());
+				stage.setScene(scene);
+				stage.setTitle("Action Screen");
+
+				// Create the fade transition for the ActionScreen
+				FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(3), actionScreen);
+				fadeInTransition.setFromValue(0.0);
+				fadeInTransition.setToValue(1.0);
+				fadeInTransition.play();
+				
+			} catch(IOException ex) {
+				ex.printStackTrace();
+			}
+		});
+		fadeTransition.play();
+
+
 	}
 
 	@FXML private void clearInputsBtnPressed() {
@@ -107,6 +156,7 @@ public class InitialScreenController {
 			greenPlayers.get(i)[1].setText("");
 			redPlayers.get(i)[0].setText("");
 			redPlayers.get(i)[1].setText("");
+			initialScreenModel.clearAllPlayers();
 		}
 	}
 
@@ -292,6 +342,8 @@ public class InitialScreenController {
 		rootPane.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 			if (event.getCode() == KeyCode.F12)
 				clearInputsBtnPressed();
+			if (event.getCode() == KeyCode.F5)
+				startMatchBtnPressed();
 		});
 	}
 

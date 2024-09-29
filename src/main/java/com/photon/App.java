@@ -47,6 +47,7 @@ public class App extends Application {
                     // Set the initial opacity of the InitialScreen to 0.0
                     initialScreen.setOpacity(0.0);
                     stage.setScene(scene);
+                    stage.setTitle("Initial Screen");
                     stage.setResizable(true);
 
                     // Create the fade transition for the InitialScreen
