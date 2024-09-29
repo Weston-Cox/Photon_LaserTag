@@ -1,23 +1,30 @@
 package com.photon.Models;
 
+import java.io.IOException;
+
 import com.photon.DB.PlayerDAO;
 import com.photon.DB.PostgreSQL;
 import com.photon.Helpers.Player;
+import com.photon.UDP.UDPClient;
 
 public class InitialScreenModel {
-    private Player greenPlayers[][] = new Player[2][15];
-    private Player redPlayers[][] = new Player[2][15];
+    private Player greenPlayers[] = new Player[16];
+    private Player redPlayers[] = new Player[16];
     private PlayerDAO playerDAO;
+    private UDPClient udpClient;
 
 
     public InitialScreenModel(PostgreSQL postgreSQL) {
         this.playerDAO = new PlayerDAO(postgreSQL);
+        try {
+            this.udpClient = new UDPClient();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // Initialize the greenPlayers and redPlayers arrays
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 15; j++) {
-                greenPlayers[i][j] = new Player("", -1, "g");
-                redPlayers[i][j] = new Player("", -1, "r");
-            }
+        for (int j = 0; j < 16; j++) {
+            greenPlayers[j] = new Player("", -1, "g", -1);
+            redPlayers[j] = new Player("", -1, "r", -1);
         }
     }
 
@@ -27,7 +34,6 @@ public class InitialScreenModel {
     // Description: Returns the codename of a player with a given ID
     //*******************************************************************************************
     public String getCodenameOfExistingID(int id) {
-        System.out.println("ID: " + id + " DEBUGGING");
         Player player = this.playerDAO.findPlayerByID(id);
         if (player != null) {
             return player.getCodename();
@@ -44,56 +50,91 @@ public class InitialScreenModel {
         }
     }
 
-
+    public void printAllPlayers() {
+        System.out.println("Green Players: \n");
+        for (int i = 1; i < 16; i++) {
+            System.out.println("ID: " + greenPlayers[i].getId() + " Codename: " + greenPlayers[i].getCodename() + " Equipment ID: " + greenPlayers[i].getEquipmentID());
+        }
+        System.out.println("Red Players: \n");
+        for (int i = 1; i < 16; i++) {
+            System.out.println("ID: " + redPlayers[i].getId() + " Codename: " + redPlayers[i].getCodename() + " Equipment ID: " + redPlayers[i].getEquipmentID());
+        }
+    }
 
 //*******************************************************************************************
 //! GETTERS AND SETTERS
 //*******************************************************************************************
-    public Player[][] getGreenPlayers() {
+    public Player[] getGreenPlayers() {
         return greenPlayers;
     }
 
-    public void setGreenPlayers(Player[][] greenPlayers) {
+    public void setGreenPlayers(Player[] greenPlayers) {
         this.greenPlayers = greenPlayers;
     }
 
-    public Player[][] getRedPlayers() {
+    public Player[] getRedPlayers() {
         return redPlayers;
     }
 
-    public void setRedPlayers(Player[][] redPlayers) {
+    public void setRedPlayers(Player[] redPlayers) {
         this.redPlayers = redPlayers;
     }
 
-    public void setCodenameOfGreenPlayer(int row, int col, String codename) {
-        greenPlayers[col][row].setCodename(codename);
+    public void setCodenameOfGreenPlayer(int row, String codename) {
+        greenPlayers[row].setCodename(codename);
     }
 
-    public void setCodenameOfRedPlayer(int row, int col, String codename) {
-        redPlayers[col][row].setCodename(codename);
+    public void setCodenameOfRedPlayer(int row, String codename) {
+        redPlayers[row].setCodename(codename);
     }
 
-    public void setIDOfGreenPlayer(int row, int col, int id) {
-        greenPlayers[col][row].setId(id);
+    public void setIDOfGreenPlayer(int row, int id) {
+        greenPlayers[row].setId(id);
     }
 
-    public void setIDOfRedPlayer(int row, int col, int id) {
-        redPlayers[col][row].setId(id);
+    public void setIDOfRedPlayer(int row, int id) {
+        redPlayers[row].setId(id);
     }
 
-    public String getCodenameOfGreenPlayer(int row, int col) {
-        return greenPlayers[col][row].getCodename();
+    public void setEquipmentIDOfGreenPlayer(int row, int equipmentID) {
+        greenPlayers[row].setEquipmentID(equipmentID);
+        try {
+            udpClient.send(equipmentID + "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public String getCodenameOfRedPlayer(int row, int col) {
-        return redPlayers[col][row].getCodename();
+    public void setEquipmentIDOfRedPlayer(int row, int equipmentID) {
+        redPlayers[row].setEquipmentID(equipmentID);
+        try {
+            udpClient.send(equipmentID + "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public int getIDOfGreenPlayer(int row, int col) {
-        return greenPlayers[col][row].getId();
+    public String getCodenameOfGreenPlayer(int row) {
+        return greenPlayers[row].getCodename();
     }
 
-    public int getIDOfRedPlayer(int row, int col) {
-        return redPlayers[col][row].getId();
+    public String getCodenameOfRedPlayer(int row) {
+        return redPlayers[row].getCodename();
+    }
+
+    public int getIDOfGreenPlayer(int row) {
+        return greenPlayers[row].getId();
+    }
+
+    public int getIDOfRedPlayer(int row) {
+        return redPlayers[row].getId();
+    }
+
+    public int getEquipmentIDOfGreenplayer(int row) {
+        return greenPlayers[row].getEquipmentID();
+    }
+
+    public int getEquipmentIDOfRedPlayer(int row) {
+        return redPlayers[row].getEquipmentID();
     }
 }

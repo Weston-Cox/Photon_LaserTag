@@ -1,23 +1,27 @@
 package com.photon.UI;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
 import com.photon.DB.PostgreSQL;
 import com.photon.Models.InitialScreenModel;
+import com.photon.Helpers.TextFieldHelper;
 
 
 public class InitialScreenController {
@@ -28,9 +32,18 @@ public class InitialScreenController {
     @FXML
     private TextField r_0_1, r_1_1, r_0_2, r_1_2, r_0_3, r_1_3, r_0_4, r_1_4, r_0_5, r_1_5, r_0_6, r_1_6, r_0_7, r_1_7, r_0_8, r_1_8, r_0_9, r_1_9, r_0_10, r_1_10, r_0_11, r_1_11, r_0_12, r_1_12, r_0_13, r_1_13, r_0_14, r_1_14, r_0_15, r_1_15;
 
+	@FXML
+	private Button btnStartMatch;
+	@FXML
+	private Button btnClearInputs;
+
+	@FXML
+	private VBox rootPane;
+
 
     private Map<Integer, TextField[]> greenPlayers = new HashMap<>();
     private Map<Integer, TextField[]> redPlayers = new HashMap<>();
+	private boolean codenamePulledFromDB = false;
 
     public InitialScreenController(PostgreSQL postgreSQL) {
         this.initialScreenModel = new InitialScreenModel(postgreSQL); // Dependency Injection
@@ -80,7 +93,22 @@ public class InitialScreenController {
         attachFocusLostListeners(greenPlayers);
         attachFocusLostListeners(redPlayers);
 
+		setupKeyEventHandler(); // Sets up a key event handler for the root pane
+
     }
+
+	@FXML private void startMatchBtnPressed() {
+		initialScreenModel.printAllPlayers();
+	}
+
+	@FXML private void clearInputsBtnPressed() {
+		for (int i = 1; i <= greenPlayers.size(); i++) {
+			greenPlayers.get(i)[0].setText("");
+			greenPlayers.get(i)[1].setText("");
+			redPlayers.get(i)[0].setText("");
+			redPlayers.get(i)[1].setText("");
+		}
+	}
 
     //*******************************************************************************************
     // attachFocusLostListeners
@@ -93,8 +121,8 @@ public class InitialScreenController {
 
             final int row = i;
 
-            applyNumericConstraint(players.get(row)[0]);  // Applies a numeric contraint to the ID column text fields
-			applyTextConstraint(players.get(row)[1]); // Applies a text constraint to the codename column text fields            
+            TextFieldHelper.applyNumericConstraint(players.get(row)[0]);  // Applies a numeric contraint to the ID column text fields
+			TextFieldHelper.applyTextConstraint(players.get(row)[1]); // Applies a text constraint to the codename column text fields            
             players.get(row)[0].focusedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -121,7 +149,7 @@ public class InitialScreenController {
 		final int c = 1;
 		TextField emptyField = new TextField(); // Empty text field to act as a placeholder
 		emptyField.setId(teamColor);
-		applyTextConstraint(textFieldRow[1]); // Applies a text constraint to the codename column text fields
+		TextFieldHelper.applyTextConstraint(textFieldRow[1]); // Applies a text constraint to the codename column text fields
 		textFieldRow[1].focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -140,6 +168,7 @@ public class InitialScreenController {
 	private void onFocusLost(TextField[] textFieldRow, int row, int column) {
 		String safePattern = "^[a-zA-Z0-9\\s._-]*$"; // Safe pattern for codenames to prevent SQL injection
 		String teamColor = textFieldRow[0].getId().substring(0, 1); // Gets the team color from the ID of the first text field
+		System.out.println("row:" + row + " column:" + column);
 
 		if (column == 0 && textFieldRow[column].getText().isEmpty()) {
 			System.out.println("ID is empty");
@@ -151,22 +180,13 @@ public class InitialScreenController {
 				try {
 					// If the text field is a green player
 					if (teamColor.equals("g")) { 
-						if (!codename.isEmpty() && textFieldRow[1].getText().isEmpty()) { // If the codename is not empty, set the codename to the one in the database
+						if (!codename.isEmpty() && textFieldRow[1].getText().isEmpty()) { // If the codename is not empty and another codename isn't in the TextField, set the codename to the one in the database
+							codenamePulledFromDB = true;
 							// Create a new TextField
 							TextField newTextField = new TextField(codename);
-							// Copy properties from the old TextField
-							newTextField.setId(textFieldRow[1].getId());
-							newTextField.setStyle(textFieldRow[1].getStyle());
-							newTextField.setPrefWidth(textFieldRow[1].getPrefWidth());
-							newTextField.setPrefHeight(textFieldRow[1].getPrefHeight());
-							newTextField.setMinWidth(textFieldRow[1].getMinWidth());
-							newTextField.setMinHeight(textFieldRow[1].getMinHeight());
-							newTextField.setMaxWidth(textFieldRow[1].getMaxWidth());
-							newTextField.setMaxHeight(textFieldRow[1].getMaxHeight());
-							newTextField.setLayoutX(textFieldRow[1].getLayoutX());
-							newTextField.setLayoutY(textFieldRow[1].getLayoutY());
-							newTextField.setAlignment(textFieldRow[1].getAlignment());
-							newTextField.setFocusTraversable(true);
+							// Grab the old TextField
+							TextField oldTextField = textFieldRow[1];
+							newTextField = TextFieldHelper.copyOldTFProperties(newTextField, oldTextField);
 							// Replace the old TextField with the new one in the parent
 							Parent parent = textFieldRow[1].getParent();
 							if (parent instanceof GridPane) {
@@ -186,29 +206,22 @@ public class InitialScreenController {
 								textFieldRow[1].requestFocus();
 								attachFocusLostListeners(textFieldRow, row, "g");
 							}
+
+							initialScreenModel.setCodenameOfGreenPlayer(row, codename);
+							initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
 						}
-						initialScreenModel.setIDOfGreenPlayer(row, column, id);
-						initialScreenModel.setCodenameOfGreenPlayer(row, column, codename);
-						initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
+						initialScreenModel.setIDOfGreenPlayer(row, id);
+						return;
 
 					// If the text field is a red player
 					} else if (teamColor.equals("r")) { 
 						if (!codename.isEmpty() && textFieldRow[1].getText().isEmpty()) { // If the codename is not empty, set the codename to the one in the database
+							codenamePulledFromDB = true;
 							// Create a new TextField
 							TextField newTextField = new TextField(codename);
-							// Copy properties from the old TextField
-							newTextField.setId(textFieldRow[1].getId());
-							newTextField.setStyle(textFieldRow[1].getStyle());
-							newTextField.setPrefWidth(textFieldRow[1].getPrefWidth());
-							newTextField.setPrefHeight(textFieldRow[1].getPrefHeight());
-							newTextField.setMinWidth(textFieldRow[1].getMinWidth());
-							newTextField.setMinHeight(textFieldRow[1].getMinHeight());
-							newTextField.setMaxWidth(textFieldRow[1].getMaxWidth());
-							newTextField.setMaxHeight(textFieldRow[1].getMaxHeight());
-							newTextField.setLayoutX(textFieldRow[1].getLayoutX());
-							newTextField.setLayoutY(textFieldRow[1].getLayoutY());
-							newTextField.setAlignment(textFieldRow[1].getAlignment());
-							newTextField.setFocusTraversable(true);
+							// Grab the old TextField
+							TextField oldTextField = textFieldRow[1];
+							newTextField = TextFieldHelper.copyOldTFProperties(newTextField, oldTextField);
 							// Replace the old TextField with the new one in the parent
 							Parent parent = textFieldRow[1].getParent();
 							if (parent instanceof GridPane) {
@@ -228,10 +241,12 @@ public class InitialScreenController {
 								textFieldRow[1].requestFocus();
 								attachFocusLostListeners(textFieldRow, row, "r");
 							}
+
+							initialScreenModel.setCodenameOfRedPlayer(row, codename);
+							initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
 						}
-						initialScreenModel.setIDOfRedPlayer(row, column, id);
-						initialScreenModel.setCodenameOfRedPlayer(row, column, codename);
-						initialScreenModel.storePlayer(id, codename); // Store/Update the player in the database
+						initialScreenModel.setIDOfRedPlayer(row, id);
+						return;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -241,16 +256,16 @@ public class InitialScreenController {
 		}
 		if (column == 1 && textFieldRow[column].getText().isEmpty()) {
 			System.out.println("Codename is empty");
-			return;
-		} else if (column == 1) {
+		} else if (column == 1 && !codenamePulledFromDB) {
 			String inputCodename = textFieldRow[column].getText();
 			System.out.println("Input codename: " + inputCodename);
 			if (teamColor.equals("g")) {
 				if (inputCodename.matches(safePattern)) {
-					initialScreenModel.setCodenameOfGreenPlayer(row, column, inputCodename);
+					initialScreenModel.setCodenameOfGreenPlayer(row, inputCodename);
 					if (!textFieldRow[0].getText().isEmpty()) { // If the ID text field is not empty, store the player
+						String equipmentID = showEquipmentIDModal((Stage) textFieldRow[column].getScene().getWindow());
+						initialScreenModel.setEquipmentIDOfGreenPlayer(row, Integer.parseInt(equipmentID));
 						initialScreenModel.storePlayer(Integer.parseInt(textFieldRow[0].getText()), inputCodename);
-						return;
 					}
 				} else {
 					textFieldRow[column].setText("");
@@ -258,10 +273,11 @@ public class InitialScreenController {
 				}
 			} else if (teamColor.equals("r")) {
 				if (inputCodename.matches(safePattern)) {
-					initialScreenModel.setCodenameOfRedPlayer(row, column, inputCodename);
+					initialScreenModel.setCodenameOfRedPlayer(row, inputCodename);
 					if (!textFieldRow[0].getText().isEmpty()) { // If the ID text field is not empty, store the player
+						String equipmentID = showEquipmentIDModal((Stage) textFieldRow[column].getScene().getWindow());
+						initialScreenModel.setEquipmentIDOfRedPlayer(row, Integer.parseInt(equipmentID));
 						initialScreenModel.storePlayer(Integer.parseInt(textFieldRow[0].getText()), inputCodename);
-						return;
 					}
 				} else {
 					textFieldRow[column].setText("");
@@ -269,40 +285,48 @@ public class InitialScreenController {
 				}
 			}
 		}
+		codenamePulledFromDB = false;
 	}
-    //*******************************************************************************************
-    // applyNumericConstraint
-    // Description: Applies a numeric constraint to the id column text fields. Doing this disallows
-    //              the user from entering anything other than numbers.
-    //*******************************************************************************************
-    private void applyNumericConstraint(TextField initialScreenTextField) {
-        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
-            if (change.getControlNewText().matches("\\d*")) {
-                return change;
-            }
-            return null;
-        });
-        initialScreenTextField.setTextFormatter(textFormatter);
-    }
 
-
-	//*******************************************************************************************
-	// applyTextConstraint
-	// Description: Applies a text constraint to the codename column text fields. Doing this disallows
-	//              the user from entering anything other than letters, numbers, spaces, periods, underscores, and hyphens.
-	//*******************************************************************************************
-	private void applyTextConstraint(TextField initialScreenTextField) {
-		TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
-			if (change.getControlNewText().matches("^[a-zA-Z0-9\\s]*$")) {
-				return change;
-			}
-			return null;
+	private void setupKeyEventHandler() {
+		rootPane.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+			if (event.getCode() == KeyCode.F12)
+				clearInputsBtnPressed();
 		});
-		initialScreenTextField.setTextFormatter(textFormatter);
 	}
 
-    private void printInputtedPlayers(){
-        System.out.println("Printing inputted players");
-        // WILL BE IMPLEMENTED SOON
+	//*******************************************************************************************
+	// showEquipmentIDModal
+	// Description: Shows the equipment ID modal and returns the equipment ID
+	//*******************************************************************************************
+	private String showEquipmentIDModal(Stage owner) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/photon/EquipmentIDModal.fxml"));
+            Parent page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Enter Equipment ID");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(owner);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            EquipmentIDModalController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait(); // Show the modal and wait for it to close
+
+            if (controller.isSubmitClicked()) {
+                String equipmentID = controller.getEquipmentID();
+                // Handle the equipment ID
+                System.out.println("Equipment ID: " + equipmentID);
+				return equipmentID;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+		return "-1";
     }
 }

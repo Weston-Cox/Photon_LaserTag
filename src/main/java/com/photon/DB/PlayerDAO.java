@@ -1,16 +1,14 @@
 package com.photon.DB;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.photon.Helpers.Player;
-
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.SQLException;
 
 public class PlayerDAO {
     private Connection connection;
@@ -32,8 +30,7 @@ public class PlayerDAO {
             stmt.setInt(1, id); // Safely set the id parameter
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                player = new Player(rs.getString("codename"), rs.getInt("id"), "u");
-                System.out.println(player.getCodename()); //DEBUGGING
+                player = new Player(rs.getString("codename"), rs.getInt("id"), "u", -1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,7 +44,7 @@ public class PlayerDAO {
         try (Statement stmt = this.connection.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                Player player = new Player(rs.getString("codename"), rs.getInt("id"), "u");
+                Player player = new Player(rs.getString("codename"), rs.getInt("id"), "u", -1);
                 players.add(player);
             }
         } catch (SQLException e) {

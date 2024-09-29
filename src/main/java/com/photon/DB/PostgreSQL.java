@@ -2,8 +2,6 @@ package com.photon.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
 
 public class PostgreSQL {
@@ -48,7 +46,7 @@ public class PostgreSQL {
         }
         return instance;
     }
-
+ 
     //*******************************************************************************************
     // closeConnection
     // Description: Closes the connection to the PostgreSQL database

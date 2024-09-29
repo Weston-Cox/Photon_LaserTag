@@ -1,5 +1,8 @@
-.textfield {
-	-fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+.textfield-error {
+	border-color: red;
+	border-width: 2px;
+	-fx-border-color: red;
+	-fx-border-width: 2px;
 }
 
 .textfield:focused {

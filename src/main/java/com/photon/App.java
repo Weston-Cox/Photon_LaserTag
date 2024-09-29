@@ -1,5 +1,11 @@
 package com.photon;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import com.photon.DB.PostgreSQL;
+import com.photon.UI.InitialScreenController;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -8,13 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.sql.SQLException;
-
-import com.photon.DB.PostgreSQL;
-import com.photon.UI.InitialScreenController;
-
-import java.io.IOException;
 
 public class App extends Application {
 

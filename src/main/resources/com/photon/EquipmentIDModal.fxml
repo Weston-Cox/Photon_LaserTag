@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="250.0" prefWidth="300.0" spacing="10" style="-fx-background-color: black;" stylesheets="@PhotonFX.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.photon.UI.EquipmentIDModalController">
+    <Label text="Enter Equipment Number" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font></Label>
+    <TextField fx:id="tfEquipmentID" alignment="CENTER" prefHeight="25.0" promptText="Equipment #">
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+      <VBox.margin>
+         <Insets left="10.0" right="10.0" />
+      </VBox.margin></TextField>
+    <Button onAction="#submit" style="textfield" text="Submit"/>
+</VBox>
