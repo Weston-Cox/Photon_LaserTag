@@ -13,6 +13,7 @@ public class GameModel {
     protected PlayerDAO playerDAO;
     protected UDPClient udpClient;
 
+
     public GameModel(PostgreSQL postgreSQL) {
         this.playerDAO = new PlayerDAO(postgreSQL);
         try {
@@ -28,6 +29,10 @@ public class GameModel {
     }
 
 
+    //*******************************************************************************************
+    // printAllPlayers
+    // Description: Prints all the players in the greenPlayers and redPlayers arrays
+    //*******************************************************************************************
     public void printAllPlayers() {
         System.out.println("Green Players: \n");
         for (int i = 1; i < 16; i++) {
@@ -39,7 +44,10 @@ public class GameModel {
         }
     }
 
-
+    //*******************************************************************************************
+    // clearAllPlayers
+    // Description: Clears all the players in the greenPlayers and redPlayers arrays
+    //*******************************************************************************************
     public void clearAllPlayers() {
         for (int i = 1; i < 16; i++) {
             greenPlayers[i].setId(-1);
