@@ -1,35 +1,39 @@
 package com.photon.UI;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.photon.DB.PostgreSQL;
+import com.photon.Helpers.GameTimer;
+import com.photon.Helpers.TextFieldHelper;
+import com.photon.Models.ActionScreenModel;
+import com.photon.Models.InitialScreenModel;
+import com.photon.UDP.UDPClient;
+
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import com.photon.DB.PostgreSQL;
-import com.photon.Models.ActionScreenModel;
-import com.photon.Models.InitialScreenModel;
-import com.photon.Helpers.TextFieldHelper;
 
 
 public class InitialScreenController {
     private InitialScreenModel initialScreenModel;
+	private GameTimer gameTimer;
+    private UDPClient udpClient;
 
     @FXML
     private TextField g_0_1, g_1_1, g_0_2, g_1_2, g_0_3, g_1_3, g_0_4, g_1_4, g_0_5, g_1_5, g_0_6, g_1_6, g_0_7, g_1_7, g_0_8, g_1_8, g_0_9, g_1_9, g_0_10, g_1_10, g_0_11, g_1_11, g_0_12, g_1_12, g_0_13, g_1_13, g_0_14, g_1_14, g_0_15, g_1_15;
@@ -51,6 +55,12 @@ public class InitialScreenController {
 
     public InitialScreenController(PostgreSQL postgreSQL) {
         this.initialScreenModel = new InitialScreenModel(postgreSQL); // Dependency Injection
+		try {
+            this.udpClient = new UDPClient();
+            this.gameTimer = new GameTimer(udpClient);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //*******************************************************************************************
@@ -102,7 +112,7 @@ public class InitialScreenController {
     }
 
 	@FXML private void startMatchBtnPressed() {
-		
+		gameTimer.startCountdown(); // Start the game timer countdown
 		Parent initialScreen = btnStartMatch.getScene().getRoot();
 		// Create the fade transition for the splash screen
 		FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), initialScreen);
@@ -151,6 +161,7 @@ public class InitialScreenController {
 	}
 
 	@FXML private void clearInputsBtnPressed() {
+		gameTimer.stopCountdown(); // Stop the game timer countdown 
 		for (int i = 1; i <= greenPlayers.size(); i++) {
 			greenPlayers.get(i)[0].setText("");
 			greenPlayers.get(i)[1].setText("");
