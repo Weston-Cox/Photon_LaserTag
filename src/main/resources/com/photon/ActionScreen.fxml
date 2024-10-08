@@ -8,6 +8,12 @@
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.photon.UI.ActionScreenController">
     <children>
         <Label text="Action Screen" />
+        <VBox fx:id="greenTeamBox">
+            <Label text="Green Team" />
+        </VBox>
+        <VBox fx:id="redTeamBox">
+            <Label text="Red Team" />
+        </VBox>
         <Button fx:id="secondaryButton" text="Print Players" onAction="#print" />
     </children>
     <padding>
