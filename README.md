@@ -19,8 +19,8 @@ The Photon Laser Tag Java application serves as the main software for managing a
 
 - **Team Management:** Easily manage red and green teams.
 - **Game Mechanics:** Enforce game rules and track scores.
-- **Networking:** Support for UDP connections to sync game data across different systems.
-- **Database Integration:** Persistent storage using PostgreSQL for player statistics and game history.
+- **Networking:** Support for UDP connections to sync and transmit game data across different systems.
+- **Database Integration:** Persistent storage using PostgreSQL for player ID and Codename.
 
 ## Installation
 
