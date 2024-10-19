@@ -26,10 +26,30 @@ The Photon Laser Tag Java application serves as the main software for managing a
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed on your system:
+**Before you begin, ensure you have the following installed on your system:**
 
 - **[Java Development Kit (JDK)](https://www.oracle.com/java/technologies/downloads/#jdk21-windows)**: Version 21
+
+  1. Check your Java version in the VM's terminal:  `java --version`
+ 
+  2. If your version is anything other than 21, navigate to [this](https://www.oracle.com/java/technologies/downloads/#java21) link in the VM's Web Browser
+ 
+  3. Download the correct package for your Linux machine. For us, it was the **x64 Debian Package**
+ 
+  4. After downloading, the package should be in your ~/Downloads folder. Navigate to that in a terminal.
+ 
+  5. Next, we need to de-package the .deb file. Within the ~/Downloads directory, run this command in the terminal: `sudo dpkg -i jdk-21_linux-x64_bin.deb`. At this point, Linux does a bunch of the work for us.
+ 
+  6. Now, the Java version should have automatically switched to version 21. To double check, run the `java --version` command.
+ 
+   - **If for any reason you do not have the correct Java version listed, we must run a couple commands to change it.**
+
+      1. Run the `sudo update-alternatives –config java` command to open up a menu. Choose the correct Java version.
+
+      2. Run the `sudo update-alternatives -config javac`  command. Choose the correct Java Compiler version.
+   
 - **[Apache Maven](https://maven.apache.org/download.cgi)**: For project build management
+&nbsp;  
 - **PostgreSQL**: For database management (This program uses a VM that runs the PostgreSQL Database)
 
 ### Steps
