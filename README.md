@@ -49,6 +49,11 @@ The Photon Laser Tag Java application serves as the main software for managing a
       2. Run the `sudo update-alternatives -config javac`  command. Choose the correct Java Compiler version.
    
 - **[Apache Maven](https://maven.apache.org/download.cgi)**: For project build management
+
+  1. Check if Maven is installed on your VM by typing: `mvn --version` on your terminal.
+ 
+  2. If not, type `sudo apt install maven`
+ 
 - **PostgreSQL**: For database management (This program uses a VM that runs the PostgreSQL Database)
 
 ### Steps
