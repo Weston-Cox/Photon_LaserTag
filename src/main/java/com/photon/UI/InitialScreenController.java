@@ -53,14 +53,10 @@ public class InitialScreenController {
     private Map<Integer, TextField[]> redPlayers = new HashMap<>();
 	private boolean codenamePulledFromDB = false;
 
-    public InitialScreenController(PostgreSQL postgreSQL) {
+    public InitialScreenController(PostgreSQL postgreSQL, GameTimer gameTimer, UDPClient udpClient) {
         this.initialScreenModel = new InitialScreenModel(postgreSQL); // Dependency Injection
-		try {
-            this.udpClient = new UDPClient();
-            this.gameTimer = new GameTimer(udpClient);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		this.gameTimer = gameTimer;
+		this.udpClient = udpClient;
     }
 
     //*******************************************************************************************
@@ -112,7 +108,6 @@ public class InitialScreenController {
     }
 
 	@FXML private void startMatchBtnPressed() {
-		gameTimer.startCountdown(); // Start the game timer countdown
 		Parent initialScreen = btnStartMatch.getScene().getRoot();
 		// Create the fade transition for the splash screen
 		FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), initialScreen);
@@ -135,8 +130,13 @@ public class InitialScreenController {
 				actionScreenModel.setGreenPlayers(initialScreenModel.getGreenPlayers());
 				actionScreenModel.setRedPlayers(initialScreenModel.getRedPlayers());
 	
+				// Inject dependencies
+				controller.setGameTimer(gameTimer);
+				controller.setUDPClient(udpClient);
+
 				// Set the ActionScreenModel in the controller
 				controller.setActionScreenModel(actionScreenModel);
+
 	
 				// Replace the current scene with the ActionScreen scene
 				Stage stage = (Stage) btnStartMatch.getScene().getWindow();

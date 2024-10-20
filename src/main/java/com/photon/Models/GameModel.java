@@ -7,11 +7,13 @@ import com.photon.DB.PostgreSQL;
 import com.photon.Helpers.Player;
 import com.photon.UDP.UDPClient;
 
+
 public class GameModel {
     protected Player greenPlayers[] = new Player[16];
     protected Player redPlayers[] = new Player[16];
     protected PlayerDAO playerDAO;
     protected UDPClient udpClient;
+
 
 
     public GameModel(PostgreSQL postgreSQL) {

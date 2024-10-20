@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import com.photon.Models.ActionScreenModel;
 import com.photon.UDP.UDPClient;
+import com.photon.Helpers.GameTimer;
+import com.photon.UDP.UDPClient;
 import com.photon.Helpers.Player;
 import com.photon.Helpers.GameTimer;
 
@@ -16,6 +18,7 @@ public class ActionScreenController {
 
     private ActionScreenModel actionScreenModel;
     private GameTimer gameTimer;
+    private UDPClient udpClient;
 
     @FXML
     private Label preGameTimerLabel; // The large pre-game timer label
@@ -32,6 +35,14 @@ public class ActionScreenController {
     @FXML
     private VBox redTeamBox;
 
+    public ActionScreenController() {
+    }
+
+    public ActionScreenController(GameTimer gameTimer, UDPClient udpClient) {
+        this.gameTimer = gameTimer;
+        this.udpClient = udpClient;
+    }
+
     @FXML 
     private HBox actionScreenContent; // The HBox that contains the main content
 
@@ -42,8 +53,16 @@ public class ActionScreenController {
     public void initialize() {
         System.out.println("ActionScreenController initialized");
         // Initial styles when the screen is loaded
-        preGameTimerLabel.setStyle("-fx-font-size: 100; -fx-font-weight: bold; -fx-text-fill: white;"); // Large white pre-game timer
-        timerLabel.setStyle("-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: white;"); // White in-game timer
+        preGameTimerLabel.setStyle("-fx-font-size: 48; -fx-font-weight: bold; -fx-text-fill: #ff0000;"); // Red pre-game timer
+        timerLabel.setStyle("-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #0077cc;"); // Blue in-game timer
+    }
+
+    public void setGameTimer(GameTimer gameTimer) {
+        this.gameTimer = gameTimer;
+    }
+
+    public void setUDPClient(UDPClient udpClient) {
+        this.udpClient = udpClient;
     }
     
     // Called when F5 is pressed
@@ -79,12 +98,7 @@ public class ActionScreenController {
     // Called when F5 is pressed to start the pre-game countdown
     public void startPreGameCountdown() {
         preGameTimerLabel.setVisible(true); // Show the large pre-game timer label
-        try {
-            gameTimer = new GameTimer(new UDPClient());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        gameTimer.startCountdown();
+        this.gameTimer.startCountdown();
     
         // Update the pre-game timer label every second
         new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask() {
@@ -122,8 +136,10 @@ public class ActionScreenController {
                     int seconds = timeRemaining % 60;
                     String formattedTime = String.format("%02d:%02d", minutes, seconds);
 
-                    // Update the game timer label
-                    timerLabel.setText("TIME REMAINING: " + formattedTime);
+                // Update the game timer label
+                Platform.runLater(() -> {
+                    timerLabel.setText("Time Remaining: " + formattedTime);
+                });
 
                     // End the game when time is up
                     if (timeRemaining <= 0) {

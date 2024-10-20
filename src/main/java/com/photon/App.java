@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.photon.DB.PostgreSQL;
+import com.photon.Helpers.GameTimer;
+import com.photon.UDP.UDPClient;
 import com.photon.UI.InitialScreenController;
 
 import javafx.animation.FadeTransition;
@@ -19,10 +21,15 @@ public class App extends Application {
 
     private static Scene scene;
     private static PostgreSQL postgreObj;
+    private static GameTimer gameTimer;
+    private static UDPClient udpClient;
+
+
 
     @Override
     public void start(Stage stage) throws IOException {
         postgreObj = PostgreSQL.getInstance();
+        gameTimer = new GameTimer(udpClient);
 
         // Load the splash screen
         Parent splashScreen = FXMLLoader.load(getClass().getResource("SplashScreen.fxml"));
@@ -75,6 +82,8 @@ public class App extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         } 
+
+        gameTimer.stopCountdown();
     }
 
     public static void setRoot(String fxml) throws IOException {
@@ -85,7 +94,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         fxmlLoader.setControllerFactory(param -> { // Dependency Injection of postgreSQL object
             if (param == InitialScreenController.class) {
-                return new InitialScreenController(postgreObj);
+                return new InitialScreenController(postgreObj, gameTimer, udpClient);
             } else {
                 try {
                     return param.getConstructor().newInstance();

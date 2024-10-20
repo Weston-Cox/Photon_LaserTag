@@ -7,12 +7,25 @@ import java.util.TimerTask;
 import com.photon.UDP.UDPClient;
 
 public class GameTimer {
+    private static GameTimer instance;
     private Timer timer;
     private UDPClient udpClient;
 
     public GameTimer(UDPClient udpClient) {
         this.udpClient = udpClient;
-        this.timer = new Timer();
+        this.timer = new Timer(true);
+    }
+
+    public GameTimer() {
+        this.timer = new Timer(true);
+    }
+
+
+    public static GameTimer getInstance() {
+        if (instance == null) {
+            instance = new GameTimer();
+        }
+        return instance;
     }
 
     public void startCountdown() {
@@ -55,5 +68,10 @@ public class GameTimer {
 
     public void stopCountdown() {
         timer.cancel();
+    }
+
+
+    public void setUDPClient(UDPClient udpClient) {
+        this.udpClient = udpClient;
     }
 }
