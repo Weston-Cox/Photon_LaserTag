@@ -1,8 +1,10 @@
 package com.photon.UI;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import com.photon.Models.ActionScreenModel;
 import com.photon.UDP.UDPClient;
 import com.photon.Helpers.Player;
@@ -31,14 +33,17 @@ public class ActionScreenController {
     private VBox redTeamBox;
 
     @FXML 
-    private VBox playByPlayBox; // The VBox that contains the play by play
+    private HBox actionScreenContent; // The HBox that contains the main content
+
+    @FXML
+    private HBox timerBox; // The HBox that contains the timer
 
     @FXML
     public void initialize() {
         System.out.println("ActionScreenController initialized");
         // Initial styles when the screen is loaded
-        preGameTimerLabel.setStyle("-fx-font-size: 48; -fx-font-weight: bold; -fx-text-fill: #ff0000;"); // Red pre-game timer
-        timerLabel.setStyle("-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #0077cc;"); // Blue in-game timer
+        preGameTimerLabel.setStyle("-fx-font-size: 100; -fx-font-weight: bold; -fx-text-fill: white;"); // Large white pre-game timer
+        timerLabel.setStyle("-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: white;"); // White in-game timer
     }
     
     // Called when F5 is pressed
@@ -50,24 +55,23 @@ public class ActionScreenController {
         startPreGameCountdown();
     }
 
-    @FXML
-    private void print() {
-        this.actionScreenModel.printAllPlayers();
-    }
-
     private void displayPlayers() {
         Player[] greenPlayers = actionScreenModel.getGreenPlayers();
         Player[] redPlayers = actionScreenModel.getRedPlayers();
 
         for (Player player : greenPlayers) {
             if (player != null) {
-                greenTeamBox.getChildren().add(new Label(player.getCodename()));
+                Label playerLabel = new Label(player.getCodename());
+                playerLabel.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: green; -fx-font-family: 'Arial';");
+                greenTeamBox.getChildren().add(playerLabel);
             }
         }
 
         for (Player player : redPlayers) {
             if (player != null) {
-                redTeamBox.getChildren().add(new Label(player.getCodename()));
+                Label playerLabel = new Label(player.getCodename());
+                playerLabel.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: red; -fx-font-family: 'Arial';");
+                redTeamBox.getChildren().add(playerLabel);
             }
         }
     }
@@ -81,27 +85,30 @@ public class ActionScreenController {
             e.printStackTrace();
         }
         gameTimer.startCountdown();
-
+    
         // Update the pre-game timer label every second
         new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask() {
             int preGameTime = 30; // Pre-game countdown in seconds
-
+    
             @Override
             public void run() {
-                // Update the large pre-game timer label
-                preGameTimerLabel.setText(String.valueOf(preGameTime));
-
-                if (preGameTime <= 0) {
-                    preGameTimerLabel.setVisible(false); // Hide the pre-game countdown timer
-                    playActionVbox.setVisible(true); // Show the play action screen (if previously hidden)
-                    startGameTimer(); // Start the 6-minute game timer
-                    cancel();
-                }
-
+                Platform.runLater(() -> {
+                    // Update the large pre-game timer label
+                    preGameTimerLabel.setText(String.valueOf(preGameTime));
+    
+                    if (preGameTime <= 0) {
+                        preGameTimerLabel.setVisible(false); // Hide the pre-game countdown timer
+                        actionScreenContent.setVisible(true); // Show the play action screen (if previously hidden)
+                        timerBox.setVisible(true); // Show the timer
+                        startGameTimer(); // Start the 6-minute game timer
+                        cancel();
+                    }
+                });
+    
                 preGameTime--;
             }
         }, 0, 1000); // Repeat every second
-    }
+    }    
 
     // Main game countdown timer (6 minutes)
     private void startGameTimer() {
@@ -110,18 +117,20 @@ public class ActionScreenController {
 
             @Override
             public void run() {
-                int minutes = timeRemaining / 60;
-                int seconds = timeRemaining % 60;
-                String formattedTime = String.format("%02d:%02d", minutes, seconds);
+                Platform.runLater(() -> {
+                    int minutes = timeRemaining / 60;
+                    int seconds = timeRemaining % 60;
+                    String formattedTime = String.format("%02d:%02d", minutes, seconds);
 
-                // Update the game timer label
-                timerLabel.setText("Time Remaining: " + formattedTime);
+                    // Update the game timer label
+                    timerLabel.setText("TIME REMAINING: " + formattedTime);
 
-                // End the game when time is up
-                if (timeRemaining <= 0) {
-                    System.out.println("Game Over!");
-                    cancel();
-                }
+                    // End the game when time is up
+                    if (timeRemaining <= 0) {
+                        System.out.println("Game Over!");
+                        cancel();
+                    }
+                });
 
                 timeRemaining--;
             }
