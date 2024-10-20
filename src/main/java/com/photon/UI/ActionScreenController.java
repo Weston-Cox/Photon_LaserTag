@@ -112,7 +112,7 @@ public class ActionScreenController {
     // Called when F5 is pressed to start the pre-game countdown
     public void startPreGameCountdown() {
         preGameTimerLabel.setVisible(true); // Show the large pre-game timer label
-        gameTimer.startPreGameCountdown(5, preGameTimerLabel, new CountdownCallback() {
+        gameTimer.startPreGameCountdown(31, preGameTimerLabel, new CountdownCallback() {
             @Override
             public void onCountdownFinished() {
                 preGameTimerLabel.setVisible(false); // Hide the large pre-game timer label

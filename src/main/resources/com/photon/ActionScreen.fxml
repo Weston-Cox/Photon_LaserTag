@@ -15,7 +15,7 @@
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </VBox.margin></Label>
-      <SplitPane fx:id="splitPaneVertical" dividerPositions="0.5" orientation="VERTICAL" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
+      <SplitPane fx:id="splitPaneVertical" dividerPositions="0.6149468892261001" orientation="VERTICAL" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
          <items>
             <SplitPane fx:id="splitPaneHorizontal" dividerPositions="0.5" minHeight="100.0" style="-fx-background-color: black;">
                <items>
