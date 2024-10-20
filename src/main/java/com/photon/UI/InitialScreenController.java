@@ -53,7 +53,7 @@ public class InitialScreenController {
     private Map<Integer, TextField[]> redPlayers = new HashMap<>();
 	private boolean codenamePulledFromDB = false;
 
-    public InitialScreenController(PostgreSQL postgreSQL, GameTimer gameTimer, UDPClient udpClient) {
+    public InitialScreenController(PostgreSQL postgreSQL, UDPClient udpClient, GameTimer gameTimer) {
         this.initialScreenModel = new InitialScreenModel(postgreSQL); // Dependency Injection
 		this.gameTimer = gameTimer;
 		this.udpClient = udpClient;
@@ -131,8 +131,8 @@ public class InitialScreenController {
 				actionScreenModel.setRedPlayers(initialScreenModel.getRedPlayers());
 	
 				// Inject dependencies
-				controller.setGameTimer(gameTimer);
 				controller.setUDPClient(udpClient);
+				controller.setGameTimer(gameTimer);
 
 				// Set the ActionScreenModel in the controller
 				controller.setActionScreenModel(actionScreenModel);
@@ -161,7 +161,6 @@ public class InitialScreenController {
 	}
 
 	@FXML private void clearInputsBtnPressed() {
-		gameTimer.stopCountdown(); // Stop the game timer countdown 
 		for (int i = 1; i <= greenPlayers.size(); i++) {
 			greenPlayers.get(i)[0].setText("");
 			greenPlayers.get(i)[1].setText("");

@@ -28,6 +28,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        udpClient = new UDPClient();
         postgreObj = PostgreSQL.getInstance();
         gameTimer = new GameTimer(udpClient);
 
@@ -73,6 +74,8 @@ public class App extends Application {
 
     @Override
     public void stop() {
+        System.out.println("Application is closing...");
+        gameTimer.stopCountdown();
         // Close PostgreSQL connection when the application stops
         try {
             if (postgreObj != null) {
@@ -83,7 +86,15 @@ public class App extends Application {
             e.printStackTrace();
         } 
 
-        gameTimer.stopCountdown();
+        try {
+            if (udpClient != null) {
+                udpClient.send("221");
+                udpClient.close();
+                System.out.println("UDP connection closed.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error sending game over signal to server: App");
+        }
     }
 
     public static void setRoot(String fxml) throws IOException {
@@ -94,7 +105,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         fxmlLoader.setControllerFactory(param -> { // Dependency Injection of postgreSQL object
             if (param == InitialScreenController.class) {
-                return new InitialScreenController(postgreObj, gameTimer, udpClient);
+                return new InitialScreenController(postgreObj, udpClient, gameTimer);
             } else {
                 try {
                     return param.getConstructor().newInstance();

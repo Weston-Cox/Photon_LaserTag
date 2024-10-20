@@ -6,18 +6,24 @@ import java.util.TimerTask;
 
 import com.photon.UDP.UDPClient;
 
+import javafx.application.Platform;
+import javafx.scene.control.Label;
+
 public class GameTimer {
     private static GameTimer instance;
-    private Timer timer;
+    private Timer localTimer1;
+    private Timer localTimer2;
     private UDPClient udpClient;
 
     public GameTimer(UDPClient udpClient) {
         this.udpClient = udpClient;
-        this.timer = new Timer(true);
+        this.localTimer1 = new Timer(true);
+        this.localTimer2 = new Timer(true);
     }
 
     public GameTimer() {
-        this.timer = new Timer(true);
+        this.localTimer1 = new Timer(true);
+        this.localTimer2 = new Timer(true);
     }
 
 
@@ -28,46 +34,46 @@ public class GameTimer {
         return instance;
     }
 
-    public void startCountdown() {
-        // 30-second warning before the game starts
-        timer.schedule(new TimerTask() {
+    public void startPreGameCountdown(int preGameTime, Label preGameTimerLabel, CountdownCallback callback) {
+        final int[] time = {preGameTime};        
+        this.localTimer1.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("30-second before game starts.");
-            }
-        }, 0);
-
-        // Game start after 30 seconds
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    udpClient.send("202");
-                    System.out.println("Game Has Started");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                Platform.runLater(() -> {
+                    preGameTimerLabel.setText(String.valueOf(time[0]));
+                });
+                time[0]--;
+                if (time[0] < 0) {
+                    localTimer1.cancel();
+                    Platform.runLater(callback::onCountdownFinished);
                 }
             }
-        }, 30000);
-
-        // Game end after 6 minutes
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    for (int i = 0; i < 3; i++) {
-                        udpClient.send("221");
-                        System.out.println("Game Over");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 390000); // 6 minutes and 30 seconds
+        }, 0, 1000);
     }
 
+    public void startGameCountdown(int gameTime, Label gameTimerLabel, CountdownCallback callback) {
+        final int[] time = {gameTime};
+        localTimer2.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    int minutes = time[0] / 60;
+                    int seconds = time[0] % 60;
+                    String formattedTime = String.format("%02d:%02d", minutes, seconds);
+                    gameTimerLabel.setText("Time Remaining: " + formattedTime);
+                });
+                time[0]--;
+                if (time[0] < 0) {
+                    localTimer2.cancel();
+                    Platform.runLater(callback::onCountdownFinished);
+                }
+            }
+        }, 0, 1000);
+    }
+    
     public void stopCountdown() {
-        timer.cancel();
+        localTimer1.cancel();
+        localTimer2.cancel();
     }
 
 

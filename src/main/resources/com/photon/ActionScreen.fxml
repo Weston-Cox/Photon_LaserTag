@@ -1,40 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.photon.UI.ActionScreenController" style="-fx-background-color: black; -fx-border-color: linear-gradient(to right, red, green); -fx-border-width: 10;">
+<VBox alignment="TOP_CENTER" maxHeight="720.0" maxWidth="900.0" minHeight="720.0" minWidth="900.0" style="-fx-background-color: black; -fx-border-color: linear-gradient(to right, green, red); -fx-border-width: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.photon.UI.ActionScreenController">
     <children>
         <!-- 30-second timer label -->
-        <Label fx:id="preGameTimerLabel" text="30" style="-fx-font-size: 100; -fx-font-weight: bold; -fx-text-fill: white;" visible="true"/>
-
-        <!-- Main content area with teams and actions -->
-        <HBox spacing="200" alignment="TOP_CENTER" style="-fx-padding: 20;" visible="false" fx:id="actionScreenContent">
-            <!-- Green Team -->
-            <VBox spacing="15" alignment="TOP_LEFT">
-                <Label text="GREEN TEAM" style="-fx-font-size: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Arial Black';"/>
-                <VBox fx:id="greenTeamBox" spacing="5" alignment="TOP_LEFT">
+        <Label fx:id="preGameTimerLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="130.0" prefWidth="122.0" style="-fx-font-size: 75; -fx-font-weight: bold; -fx-text-fill: white;" text="30" textAlignment="CENTER" visible="true" VBox.vgrow="NEVER">
+         <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </VBox.margin></Label>
+      <SplitPane fx:id="splitPaneVertical" dividerPositions="0.5" orientation="VERTICAL" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
+         <items>
+            <SplitPane fx:id="splitPaneHorizontal" dividerPositions="0.5" minHeight="100.0" style="-fx-background-color: black;">
+               <items>
+            
+                                <!-- Main content area with teams and actions -->
+                    <HBox fx:id="actionScreenContent" alignment="TOP_CENTER" fillHeight="false" spacing="40.0" style="-fx-padding: 20;" visible="false">
+                        <!-- Green Team -->
+                        <VBox alignment="TOP_CENTER" minWidth="150.0" prefWidth="150.0" spacing="15.0">
+                            <Label style="-fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="GREEN TEAM" textFill="WHITE" />
+                            <VBox fx:id="greenTeamBox" alignment="TOP_LEFT" spacing="5">
                     <!-- Green Team players will be dynamically added here -->
                 </VBox>
-            </VBox>
-
-            <!-- Red Team -->
-            <VBox spacing="15" alignment="TOP_RIGHT">
-                <Label text="RED TEAM" style="-fx-font-size: 48; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Arial Black';"/>
-                <VBox fx:id="redTeamBox" spacing="5" alignment="TOP_RIGHT">
+                        </VBox>
+            
+                                    <!-- Red Team -->
+                        <VBox alignment="TOP_CENTER" minWidth="150.0" prefWidth="150.0" spacing="15">
+                            <Label prefHeight="30.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="RED TEAM" textFill="WHITE" />
+                            <VBox fx:id="redTeamBox" spacing="5">
                     <!-- Red Team players will be dynamically added here -->
                 </VBox>
-            </VBox>
-        </HBox>
-
-        <!-- Bottom area for game timer -->
-        <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 20;" fx:id="timerBox" visible="false">
-            <Label fx:id="timerLabel" text="TIME REMAINING: 06:00" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: white;"/>
-        </HBox>
+                        </VBox>
+                    </HBox>
+            
+                    <!-- Bottom area for game timer -->
+                    <HBox fx:id="timerBox" alignment="TOP_CENTER" style="-fx-padding: 20;" visible="false">
+                        <Label fx:id="timerLabel" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: white;" text="TIME REMAINING: 06:00" />
+                    </HBox>
+               </items>
+            </SplitPane>
+            <Pane fx:id="textFlowPane" prefHeight="400.0" prefWidth="878.0">
+               <children>
+                  <TextFlow layoutX="39.0" layoutY="14.0" prefWidth="800.0" />
+               </children>
+            </Pane>
+         </items>
+      </SplitPane>
     </children>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
 </VBox>
