@@ -5,9 +5,6 @@ import com.photon.Helpers.Player;
 
 public class ActionScreenModel extends GameModel {
 
-    private Player[] greenPlayers;
-    private Player[] redPlayers;
-
     public ActionScreenModel(PostgreSQL postgreSQL) {
         super(postgreSQL);
     }

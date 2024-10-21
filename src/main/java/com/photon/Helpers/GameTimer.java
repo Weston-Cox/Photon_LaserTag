@@ -13,13 +13,6 @@ public class GameTimer {
     private static GameTimer instance;
     private Timer localTimer1;
     private Timer localTimer2;
-    private UDPClient udpClient;
-
-    public GameTimer(UDPClient udpClient) {
-        this.udpClient = udpClient;
-        this.localTimer1 = new Timer(true);
-        this.localTimer2 = new Timer(true);
-    }
 
     public GameTimer() {
         this.localTimer1 = new Timer(true);
@@ -76,8 +69,4 @@ public class GameTimer {
         localTimer2.cancel();
     }
 
-
-    public void setUDPClient(UDPClient udpClient) {
-        this.udpClient = udpClient;
-    }
 }

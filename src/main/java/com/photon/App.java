@@ -30,7 +30,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         udpClient = new UDPClient();
         postgreObj = PostgreSQL.getInstance();
-        gameTimer = new GameTimer(udpClient);
+        gameTimer = new GameTimer();
 
         // Load the splash screen
         Parent splashScreen = FXMLLoader.load(getClass().getResource("SplashScreen.fxml"));
