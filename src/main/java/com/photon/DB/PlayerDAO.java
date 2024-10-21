@@ -12,9 +12,11 @@ import com.photon.Helpers.Player;
 
 public class PlayerDAO {
     private Connection connection;
+    private PostgreSQL postgreSQL;
 
     public PlayerDAO(PostgreSQL postgreSQL) {
         try {
+            this.postgreSQL = postgreSQL;
             this.connection = postgreSQL.getConnection();
             System.out.println(this.connection);
         }
@@ -85,5 +87,10 @@ public class PlayerDAO {
             return false;
         }
         return true;
+    }
+
+
+    public PostgreSQL getPostgreSQL() {
+        return this.postgreSQL;
     }
 }

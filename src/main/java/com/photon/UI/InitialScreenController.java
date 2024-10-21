@@ -1,31 +1,39 @@
 package com.photon.UI;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.photon.DB.PostgreSQL;
+import com.photon.Helpers.GameTimer;
+import com.photon.Helpers.TextFieldHelper;
+import com.photon.Models.ActionScreenModel;
+import com.photon.Models.InitialScreenModel;
+import com.photon.UDP.UDPClient;
+
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import com.photon.DB.PostgreSQL;
-import com.photon.Models.InitialScreenModel;
-import com.photon.Helpers.TextFieldHelper;
+import javafx.util.Duration;
 
 
 public class InitialScreenController {
     private InitialScreenModel initialScreenModel;
+	private GameTimer gameTimer;
+    private UDPClient udpClient;
 
     @FXML
     private TextField g_0_1, g_1_1, g_0_2, g_1_2, g_0_3, g_1_3, g_0_4, g_1_4, g_0_5, g_1_5, g_0_6, g_1_6, g_0_7, g_1_7, g_0_8, g_1_8, g_0_9, g_1_9, g_0_10, g_1_10, g_0_11, g_1_11, g_0_12, g_1_12, g_0_13, g_1_13, g_0_14, g_1_14, g_0_15, g_1_15;
@@ -45,8 +53,10 @@ public class InitialScreenController {
     private Map<Integer, TextField[]> redPlayers = new HashMap<>();
 	private boolean codenamePulledFromDB = false;
 
-    public InitialScreenController(PostgreSQL postgreSQL) {
+    public InitialScreenController(PostgreSQL postgreSQL, UDPClient udpClient, GameTimer gameTimer) {
         this.initialScreenModel = new InitialScreenModel(postgreSQL); // Dependency Injection
+		this.gameTimer = gameTimer;
+		this.udpClient = udpClient;
     }
 
     //*******************************************************************************************
@@ -98,7 +108,56 @@ public class InitialScreenController {
     }
 
 	@FXML private void startMatchBtnPressed() {
-		initialScreenModel.printAllPlayers();
+		Parent initialScreen = btnStartMatch.getScene().getRoot();
+		// Create the fade transition for the splash screen
+		FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), initialScreen);
+		fadeTransition.setFromValue(1.0);
+		fadeTransition.setToValue(0.0);
+		fadeTransition.setOnFinished(e -> {
+			try {
+				// Load the ActionScreen FXML
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/photon/ActionScreen.fxml"));
+				Parent actionScreen = loader.load();
+				actionScreen.setOpacity(0.0);
+	
+				// Get the controller and set the initialScreenModel
+				ActionScreenController controller = loader.getController();
+	
+				// Create ActionScreenModel with the same PostgreSQL object
+				ActionScreenModel actionScreenModel = new ActionScreenModel(initialScreenModel.getPostgreSQL());
+	
+				// Pass the Green and Red players to the ActionScreenModel
+				actionScreenModel.setGreenPlayers(initialScreenModel.getGreenPlayers());
+				actionScreenModel.setRedPlayers(initialScreenModel.getRedPlayers());
+	
+				// Inject dependencies
+				controller.setUDPClient(udpClient);
+				controller.setGameTimer(gameTimer);
+
+				// Set the ActionScreenModel in the controller
+				controller.setActionScreenModel(actionScreenModel);
+
+	
+				// Replace the current scene with the ActionScreen scene
+				Stage stage = (Stage) btnStartMatch.getScene().getWindow();
+				Scene scene = new Scene(actionScreen, 900, 720);
+				scene.getStylesheets().add(getClass().getResource("/com/photon/PhotonFX.css").toExternalForm());
+				stage.setScene(scene);
+				stage.setTitle("Action Screen");
+
+				// Create the fade transition for the ActionScreen
+				FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(3), actionScreen);
+				fadeInTransition.setFromValue(0.0);
+				fadeInTransition.setToValue(1.0);
+				fadeInTransition.play();
+				
+			} catch(IOException ex) {
+				ex.printStackTrace();
+			}
+		});
+		fadeTransition.play();
+
+
 	}
 
 	@FXML private void clearInputsBtnPressed() {
@@ -107,6 +166,7 @@ public class InitialScreenController {
 			greenPlayers.get(i)[1].setText("");
 			redPlayers.get(i)[0].setText("");
 			redPlayers.get(i)[1].setText("");
+			initialScreenModel.clearAllPlayers();
 		}
 	}
 
@@ -292,6 +352,8 @@ public class InitialScreenController {
 		rootPane.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 			if (event.getCode() == KeyCode.F12)
 				clearInputsBtnPressed();
+			if (event.getCode() == KeyCode.F5)
+				startMatchBtnPressed();
 		});
 	}
 
