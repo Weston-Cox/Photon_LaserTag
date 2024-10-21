@@ -1,11 +1,6 @@
 package com.photon.Helpers;
-
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.photon.UDP.UDPClient;
-
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 
