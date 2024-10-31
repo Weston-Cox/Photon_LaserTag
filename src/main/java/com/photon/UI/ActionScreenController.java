@@ -1,11 +1,16 @@
 package com.photon.UI;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+
 import com.photon.Models.ActionScreenModel;
 import com.photon.UDP.UDPClient;
 import com.photon.Helpers.CountdownCallback;
@@ -93,18 +98,54 @@ public class ActionScreenController {
         Player[] redPlayers = actionScreenModel.getRedPlayers();
 
         for (Player player : greenPlayers) {
-            if (player != null) {
+            if (player != null && player.getCodename() != "") {
+                GridPane playerGrid = new GridPane();
+                playerGrid.setPrefWidth(300); // Set a preferred width for the GridPane
+
+                // Set column constraints
+                ColumnConstraints col1 = new ColumnConstraints();
+                col1.setHgrow(Priority.ALWAYS);
+                ColumnConstraints col2 = new ColumnConstraints();
+                col2.setHgrow(Priority.NEVER);
+                playerGrid.getColumnConstraints().addAll(col1, col2);
+
                 Label playerLabel = new Label(player.getCodename());
+                Label playerScoreLabel = new Label(String.valueOf(player.getScore()));
                 playerLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: green; -fx-font-family: 'Arial';");
-                greenTeamBox.getChildren().add(playerLabel);
+                playerScoreLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: green; -fx-font-family: 'Arial';");
+
+                // Add labels to the GridPane
+                playerGrid.add(playerLabel, 0, 0);
+                playerGrid.add(playerScoreLabel, 1, 0);
+
+                // Add the GridPane to the VBox
+                greenTeamBox.getChildren().add(playerGrid);
             }
         }
 
         for (Player player : redPlayers) {
-            if (player != null) {
+            if (player != null && player.getCodename() != "") {
+                GridPane playerGrid = new GridPane();
+                playerGrid.setPrefWidth(300); // Set a preferred width for the GridPane
+
+                // Set column constraints
+                ColumnConstraints col1 = new ColumnConstraints();
+                col1.setHgrow(Priority.ALWAYS);
+                ColumnConstraints col2 = new ColumnConstraints();
+                col2.setHgrow(Priority.NEVER);
+                playerGrid.getColumnConstraints().addAll(col1, col2);
+
                 Label playerLabel = new Label(player.getCodename());
+                Label playerScoreLabel = new Label(String.valueOf(player.getScore()));
                 playerLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: red; -fx-font-family: 'Arial';");
-                redTeamBox.getChildren().add(playerLabel);
+                playerScoreLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: red; -fx-font-family: 'Arial';");
+
+                // Add labels to the GridPane
+                playerGrid.add(playerLabel, 0, 0);
+                playerGrid.add(playerScoreLabel, 1, 0);
+
+                // Add the GridPane to the VBox
+                redTeamBox.getChildren().add(playerGrid);
             }
         }
     }

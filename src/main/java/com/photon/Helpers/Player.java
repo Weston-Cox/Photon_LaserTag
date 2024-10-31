@@ -5,6 +5,7 @@ public class Player {
     private int id;
     private Team team;
     private int equipmentID;
+    private int score;
 
 
 
@@ -14,6 +15,7 @@ public class Player {
         this.id = id;
         this.team = Team.getTeam(team);
         this.equipmentID = equipmnetId;
+        this.score = 0;
     }
 
 
@@ -47,5 +49,13 @@ public class Player {
 
     public void setEquipmentID(int equipmentID) {
         this.equipmentID = equipmentID;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
