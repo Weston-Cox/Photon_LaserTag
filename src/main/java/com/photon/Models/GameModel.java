@@ -119,6 +119,14 @@ public class GameModel {
         }
     }
 
+    public void setScoreOfGreenPlayer(int row, int score) {
+        greenPlayers[row].setScore(score);
+    }
+
+    public void setScoreOfRedPlayer(int row, int score) {
+        redPlayers[row].setScore(score);
+    }
+
     public String getCodenameOfGreenPlayer(int row) {
         return greenPlayers[row].getCodename();
     }
@@ -141,6 +149,14 @@ public class GameModel {
 
     public int getEquipmentIDOfRedPlayer(int row) {
         return redPlayers[row].getEquipmentID();
+    }
+
+    public int getScoreOfGreenPlayer(int row) {
+        return greenPlayers[row].getScore();
+    }
+
+    public int getScoreOfRedPlayer(int row) {
+        return redPlayers[row].getScore();
     }
 
 }

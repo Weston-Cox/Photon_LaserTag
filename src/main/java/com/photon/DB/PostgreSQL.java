@@ -67,7 +67,7 @@ public class PostgreSQL {
 //*******************************************************************************************
     private boolean CreateDBConnection() {
         boolean returnVal = false;
-        System.out.println(this.url + " " + this.user + " " + this.password);
+        // System.out.println(this.url + " " + this.user + " " + this.password);
 
         try {
             // Load PostgreSQL JDBC Driver

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import com.photon.DB.PostgreSQL;
 import com.photon.Helpers.GameTimer;
 import com.photon.UDP.UDPClient;
+import com.photon.UDP.UDPServer;
 import com.photon.UI.InitialScreenController;
 
 import javafx.animation.FadeTransition;
@@ -23,14 +24,23 @@ public class App extends Application {
     private static PostgreSQL postgreObj;
     private static GameTimer gameTimer;
     private static UDPClient udpClient;
+    private static UDPServer udpServer;
+    private Thread udpServerThread;
 
 
 
     @Override
     public void start(Stage stage) throws IOException {
         udpClient = new UDPClient();
+        udpServer = new UDPServer(7501, message -> {
+            // Temporary Callback
+        });
         postgreObj = PostgreSQL.getInstance();
         gameTimer = new GameTimer();
+
+        // Start the UDP server in a new thread
+        udpServerThread = new Thread(udpServer);
+        udpServerThread.start();
 
         // Load the splash screen
         Parent splashScreen = FXMLLoader.load(getClass().getResource("SplashScreen.fxml"));
@@ -50,7 +60,7 @@ public class App extends Application {
                     // Load the InitialScreen
                     Parent initialScreen = loadFXML("InitialScreen");
                     scene = new Scene(initialScreen, 900, 720);
-                    scene.getStylesheets().add(getClass().getResource("/com/photon/PhotonFX.css").toExternalForm());
+                    // scene.getStylesheets().add(getClass().getResource("/com/photon/PhotonFX.css").toExternalForm());
 
                     // Set the initial opacity of the InitialScreen to 0.0
                     initialScreen.setOpacity(0.0);
@@ -93,7 +103,22 @@ public class App extends Application {
                 System.out.println("UDP connection closed.");
             }
         } catch (IOException e) {
-            System.out.println("Error sending game over signal to server: App");
+            System.out.println("Error sending game over signal to server: App\n" + e);
+        }
+
+        if (udpServer != null) {
+            udpServer.stop();
+            System.out.println("UDP Server stopped.");
+        }
+
+        if (udpServerThread != null) {
+            udpServerThread.interrupt();
+            try {
+                udpServerThread.join();
+                System.out.println("UDP Server thread joined.");
+            } catch (InterruptedException e) {
+                System.out.println("Error joining UDP Server thread: App\n" + e);
+            }
         }
     }
 
@@ -105,7 +130,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         fxmlLoader.setControllerFactory(param -> { // Dependency Injection of postgreSQL object
             if (param == InitialScreenController.class) {
-                return new InitialScreenController(postgreObj, udpClient, gameTimer);
+                return new InitialScreenController(postgreObj, udpClient, udpServer, gameTimer);
             } else {
                 try {
                     return param.getConstructor().newInstance();

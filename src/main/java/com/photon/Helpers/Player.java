@@ -10,11 +10,11 @@ public class Player {
 
 
 
-    public Player(String codename, int id, String team, int equipmnetId) {
+    public Player(String codename, int id, String team, int equipmentID) {
         this.codename = codename;
         this.id = id;
         this.team = Team.getTeam(team);
-        this.equipmentID = equipmnetId;
+        this.equipmentID = equipmentID;
         this.score = 0;
     }
 

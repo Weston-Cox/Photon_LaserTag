@@ -10,6 +10,7 @@ import com.photon.Helpers.TextFieldHelper;
 import com.photon.Models.ActionScreenModel;
 import com.photon.Models.InitialScreenModel;
 import com.photon.UDP.UDPClient;
+import com.photon.UDP.UDPServer;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -34,6 +35,7 @@ public class InitialScreenController {
     private InitialScreenModel initialScreenModel;
 	private GameTimer gameTimer;
     private UDPClient udpClient;
+	private UDPServer udpServer;
 
     @FXML
     private TextField g_0_1, g_1_1, g_0_2, g_1_2, g_0_3, g_1_3, g_0_4, g_1_4, g_0_5, g_1_5, g_0_6, g_1_6, g_0_7, g_1_7, g_0_8, g_1_8, g_0_9, g_1_9, g_0_10, g_1_10, g_0_11, g_1_11, g_0_12, g_1_12, g_0_13, g_1_13, g_0_14, g_1_14, g_0_15, g_1_15;
@@ -53,10 +55,11 @@ public class InitialScreenController {
     private Map<Integer, TextField[]> redPlayers = new HashMap<>();
 	private boolean codenamePulledFromDB = false;
 
-    public InitialScreenController(PostgreSQL postgreSQL, UDPClient udpClient, GameTimer gameTimer) {
+    public InitialScreenController(PostgreSQL postgreSQL, UDPClient udpClient, UDPServer udpServer, GameTimer gameTimer) {
         this.initialScreenModel = new InitialScreenModel(postgreSQL); // Dependency Injection
 		this.gameTimer = gameTimer;
 		this.udpClient = udpClient;
+		this.udpServer = udpServer;
     }
 
     //*******************************************************************************************
@@ -132,6 +135,7 @@ public class InitialScreenController {
 	
 				// Inject dependencies
 				controller.setUDPClient(udpClient);
+				controller.setUDPServer(udpServer);
 				controller.setGameTimer(gameTimer);
 
 				// Set the ActionScreenModel in the controller
@@ -141,7 +145,7 @@ public class InitialScreenController {
 				// Replace the current scene with the ActionScreen scene
 				Stage stage = (Stage) btnStartMatch.getScene().getWindow();
 				Scene scene = new Scene(actionScreen, 900, 720);
-				scene.getStylesheets().add(getClass().getResource("/com/photon/PhotonFX.css").toExternalForm());
+				// scene.getStylesheets().add(getClass().getResource("/com/photon/PhotonFX.css").toExternalForm());
 				stage.setScene(scene);
 				stage.setTitle("Action Screen");
 
@@ -228,7 +232,6 @@ public class InitialScreenController {
 	private void onFocusLost(TextField[] textFieldRow, int row, int column) {
 		String safePattern = "^[a-zA-Z0-9\\s._-]*$"; // Safe pattern for codenames to prevent SQL injection
 		String teamColor = textFieldRow[0].getId().substring(0, 1); // Gets the team color from the ID of the first text field
-		System.out.println("row:" + row + " column:" + column);
 
 		if (column == 0 && textFieldRow[column].getText().isEmpty()) {
 			System.out.println("ID is empty");
@@ -365,7 +368,6 @@ public class InitialScreenController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/photon/EquipmentIDModal.fxml"));
             Parent page = loader.load();
-
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Enter Equipment ID");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -375,7 +377,6 @@ public class InitialScreenController {
 
             EquipmentIDModalController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-
             dialogStage.showAndWait(); // Show the modal and wait for it to close
 
             if (controller.isSubmitClicked()) {

@@ -1,5 +1,6 @@
 package com.photon.UI;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -13,6 +14,7 @@ import javafx.scene.layout.Priority;
 
 import com.photon.Models.ActionScreenModel;
 import com.photon.UDP.UDPClient;
+import com.photon.UDP.UDPServer;
 import com.photon.Helpers.CountdownCallback;
 import com.photon.Helpers.GameTimer;
 import com.photon.Helpers.Player;
@@ -24,6 +26,7 @@ public class ActionScreenController {
     private ActionScreenModel actionScreenModel;
     private GameTimer gameTimer;
     private UDPClient udpClient;
+    private UDPServer udpServer;
 
     @FXML
     private SplitPane splitPaneVertical; // The main split pane
@@ -53,10 +56,6 @@ public class ActionScreenController {
     public ActionScreenController() {
     }
 
-    public ActionScreenController(UDPClient udpClient, GameTimer gameTimer) {
-        this.udpClient = udpClient;
-        this.gameTimer = gameTimer;
-    }
 
     @FXML 
     private HBox actionScreenContent; // The HBox that contains the main content
@@ -66,15 +65,23 @@ public class ActionScreenController {
 
     @FXML
     public void initialize() {
-        System.out.println("ActionScreenController initialized");
         // Initial styles when the screen is loaded
         preGameTimerLabel.setStyle("-fx-font-size: 38; -fx-font-weight: bold; -fx-text-fill: #ff0000;"); // Red pre-game timer
         timerLabel.setStyle("-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #0077cc;"); // Blue in-game timer
+
+
 
         splitPaneHorizontal.setManaged(false);
         splitPaneVertical.setManaged(false);
         textFlowPane.setManaged(false);
     }
+
+    public void setUDPServer(UDPServer udpServer) {
+        this.udpServer = udpServer;
+        System.out.println("UDP Server set in ActionScreenController");
+
+        startUdpServer();
+    } 
 
     public void setUDPClient(UDPClient udpClient) {
         this.udpClient = udpClient;
@@ -91,6 +98,24 @@ public class ActionScreenController {
 
         displayPlayers();
         startPreGameCountdown();
+    }
+
+
+    public void startUdpServer() {
+        if (this.udpServer == null) {
+            System.out.println("UDP Server is null");
+            return;
+        }
+
+        this.udpServer.setCallback( message -> {
+            //TODO Handle the received message (parse, process, etc.)
+            System.out.println("Message received: " + message);
+
+            Platform.runLater(() ->{
+                //TODO Update the UI
+            });
+        });
+        // new Thread(udpServer).start();
     }
 
     private void displayPlayers() {
@@ -172,7 +197,6 @@ public class ActionScreenController {
         for (int i = 0; i < 3; i++) {
             try {
                 udpClient.send("202");
-                System.out.println("Game Has Started");
             } catch (IOException e) {
                 e.printStackTrace();
             }
