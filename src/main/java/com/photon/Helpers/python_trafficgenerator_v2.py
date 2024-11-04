@@ -52,6 +52,7 @@ print ('')
 counter = 0
 
 while True:
+	print("iteration: " + str(counter))
 	if random.randint(1,2) == 1:
 		redplayer = red1
 	else:

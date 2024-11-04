@@ -24,7 +24,7 @@
                     <HBox fx:id="actionScreenContent" alignment="TOP_CENTER" blendMode="SRC_ATOP" fillHeight="false" minHeight="150.0" spacing="40.0" style="-fx-padding: 20;" visible="false">
                         <!-- Green Team -->
                         <VBox alignment="TOP_CENTER" prefWidth="150.0" spacing="15.0">
-                            <Label style="-fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="GREEN TEAM" textFill="WHITE" />
+                            <Label fx:id="greenTeamScore" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="GREEN TEAM : 0" textAlignment="JUSTIFY" textFill="WHITE" />
                             <VBox fx:id="greenTeamBox" alignment="TOP_LEFT" spacing="5">
                     <!-- Green Team players will be dynamically added here -->
                 </VBox>
@@ -32,7 +32,7 @@
             
                                     <!-- Red Team -->
                         <VBox alignment="TOP_CENTER" prefWidth="150.0" spacing="15">
-                            <Label prefHeight="30.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="RED TEAM" textFill="WHITE" />
+                            <Label fx:id="redTeamScore" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="RED TEAM : 0" textFill="WHITE" />
                             <VBox fx:id="redTeamBox" spacing="5">
                     <!-- Red Team players will be dynamically added here -->
                 </VBox>

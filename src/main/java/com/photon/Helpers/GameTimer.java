@@ -48,7 +48,7 @@ public class GameTimer {
                     int minutes = time[0] / 60;
                     int seconds = time[0] % 60;
                     String formattedTime = String.format("%02d:%02d", minutes, seconds);
-                    gameTimerLabel.setText("Time Remaining: " + formattedTime);
+                    gameTimerLabel.setText("Time: " + formattedTime);
                 });
                 time[0]--;
                 if (time[0] < 0) {

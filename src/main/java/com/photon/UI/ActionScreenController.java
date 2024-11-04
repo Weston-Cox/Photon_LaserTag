@@ -1,5 +1,7 @@
 package com.photon.UI;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -18,8 +20,10 @@ import com.photon.UDP.UDPServer;
 import com.photon.Helpers.CountdownCallback;
 import com.photon.Helpers.GameTimer;
 import com.photon.Helpers.Player;
+import com.photon.Helpers.Team;
 
 import java.io.IOException;
+import javafx.util.Duration;
 
 public class ActionScreenController {
 
@@ -27,6 +31,8 @@ public class ActionScreenController {
     private GameTimer gameTimer;
     private UDPClient udpClient;
     private UDPServer udpServer;
+    private Timeline greenTeamFlashingTimeline;
+    private Timeline redTeamFlashingTimeline;
 
     @FXML
     private SplitPane splitPaneVertical; // The main split pane
@@ -45,6 +51,12 @@ public class ActionScreenController {
 
     @FXML 
     private Label timerLabel; // 6 minute timer label
+
+    @FXML
+    private Label greenTeamScore; // Green team score label
+
+    @FXML
+    private Label redTeamScore; // Red team score label
 
     @FXML
     private VBox greenTeamBox;
@@ -94,7 +106,6 @@ public class ActionScreenController {
     // Called when F5 is pressed
     public void setActionScreenModel(ActionScreenModel actionScreenModel) {
         this.actionScreenModel = actionScreenModel;
-        System.out.println("ActionScreenModel set in ActionScreenController");
 
         displayPlayers();
         startPreGameCountdown();
@@ -109,13 +120,10 @@ public class ActionScreenController {
 
         this.udpServer.setCallback( message -> {
             //TODO Handle the received message (parse, process, etc.)
-            System.out.println("Message received: " + message);
 
-            Platform.runLater(() ->{
-                //TODO Update the UI
-            });
+            runningGameLogic(message);
+
         });
-        // new Thread(udpServer).start();
     }
 
     private void displayPlayers() {
@@ -193,28 +201,167 @@ public class ActionScreenController {
 
     // Main game countdown timer (6 minutes)
     private void startGameTimer() {
-        // Sends the game start signal to the server 3 times
-        for (int i = 0; i < 3; i++) {
+        // Sends the game start signal to the server
             try {
                 udpClient.send("202");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+
         splitPaneHorizontal.setManaged(true);
         splitPaneVertical.setManaged(true);
         textFlowPane.setManaged(true);
         gameTimer.startGameCountdown(361, timerLabel, new CountdownCallback() {
             @Override
-            public void onCountdownFinished() {
+            public void onCountdownFinished() { // Transmit the game over signal to the server three times
                 System.out.println("Game Over");
-                try {
-                    udpClient.send("221");
-                    System.out.println("Game Over signal sent to server");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                for (int i = 0; i < 3; i++) {
+                    try {
+                        udpClient.send("221");
+                        System.out.println("Game Over signal sent to server");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
     }
+
+
+    private void runningGameLogic(String message) {
+        Player attackingPlayer = actionScreenModel.findPlayerByEquipmentID(Integer.parseInt(message.split(":")[0]));
+        Player defendingPlayer = actionScreenModel.findPlayerByEquipmentID(Integer.parseInt(message.split(":")[1]));
+        String hitPlayerID = "-1";
+
+        if (message.split(":")[1].equals("53") && attackingPlayer.getTeam() == Team.GREEN) { // Green player has hit the red base
+            System.out.println("Red base has been hit by "+attackingPlayer.getCodename());
+            hitPlayerID = "53";
+            attackingPlayer.setScore(attackingPlayer.getScore() + 100);
+            actionScreenModel.setGreenScore(actionScreenModel.getGreenScore() + 100);
+
+        } else if (message.split(":")[1].equals("43") && attackingPlayer.getTeam() == Team.RED) { // 53 is the equipment ID for the green base
+            System.out.println("Green base has been hit by "+attackingPlayer.getCodename());
+            hitPlayerID = "43";
+            attackingPlayer.setScore(attackingPlayer.getScore() + 100);
+            actionScreenModel.setRedScore(actionScreenModel.getRedScore() + 100);
+
+        } else if(defendingPlayer != null && attackingPlayer.getTeam() == defendingPlayer.getTeam()) { // Player has hit a teammate
+            System.out.println("The attacking player ("+attackingPlayer.getCodename()+") has hit a teammate ("+defendingPlayer.getCodename()+")");
+            hitPlayerID = attackingPlayer.getEquipmentID()+""; // If a player hits a teammate, return their own equipment ID
+            attackingPlayer.setScore(attackingPlayer.getScore() - 10);
+
+            if (attackingPlayer.getTeam() == Team.GREEN) {
+                actionScreenModel.setGreenScore(actionScreenModel.getGreenScore() - 10);
+            } else {
+                actionScreenModel.setRedScore(actionScreenModel.getRedScore() - 10);
+            }
+
+        } else if (defendingPlayer != null){ // Player has been hit by an opponent
+            System.out.println("The attacking player ("+attackingPlayer.getCodename()+") has hit the defending player ("+defendingPlayer.getCodename()+")");
+            hitPlayerID = defendingPlayer.getEquipmentID()+"";
+            attackingPlayer.setScore(attackingPlayer.getScore() + 10);
+
+            if (attackingPlayer.getTeam() == Team.GREEN) {
+                actionScreenModel.setGreenScore(actionScreenModel.getGreenScore() + 10);
+            } else {
+                actionScreenModel.setRedScore(actionScreenModel.getRedScore() + 10);
+            }
+
+        }
+
+        sendUDPReceivedReceipt(hitPlayerID); // Send a receipt to the server that the message has been received
+
+        Platform.runLater(() ->{
+            // Update the player scores
+            for (Player player : actionScreenModel.getGreenPlayers()) {
+                if (player != null && player.getCodename() != "") {
+                    for (int i = 0; i < greenTeamBox.getChildren().size(); i++) {
+                        GridPane playerGrid = (GridPane) greenTeamBox.getChildren().get(i);
+                        Label playerScoreLabel = (Label) playerGrid.getChildren().get(1);
+                        if (player.getCodename().equals(((Label) playerGrid.getChildren().get(0)).getText())) {
+                            playerScoreLabel.setText(String.valueOf(player.getScore()));
+                        }
+                    }
+                }
+            }
+
+            for (Player player : actionScreenModel.getRedPlayers()) {
+                if (player != null && player.getCodename() != "") {
+                    for (int i = 0; i < redTeamBox.getChildren().size(); i++) {
+                        GridPane playerGrid = (GridPane) redTeamBox.getChildren().get(i);
+                        Label playerScoreLabel = (Label) playerGrid.getChildren().get(1);
+                        if (player.getCodename().equals(((Label) playerGrid.getChildren().get(0)).getText())) {
+                            playerScoreLabel.setText(String.valueOf(player.getScore()));
+                        }
+                    }
+                }
+            }
+
+            // Update the team scores
+            greenTeamScore.setText("Green Team: " + String.valueOf(actionScreenModel.getGreenScore()));
+            redTeamScore.setText("Red Team: " + String.valueOf(actionScreenModel.getRedScore()));
+
+            // Update the flashing effect based on the team scores
+            updateFlashingEffect();
+        });
+
+    }
+
+    
+    private void sendUDPReceivedReceipt(String hitPlayerID) {
+        try {
+            udpClient.send(hitPlayerID);
+        } catch (IOException e) {
+            System.out.println("Error sending message to server: " + e.getMessage());
+        }
+    }
+
+        // Method to start the flashing effect
+    private void startFlashing(Label label) {
+
+        stopFlashing(label);
+
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.seconds(0.5), e -> label.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-font-family: 'Arial Black'; -fx-text-fill: yellow;")),
+            new KeyFrame(Duration.seconds(1), e -> label.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-font-family: 'Arial Black'; -fx-text-fill: white;"))
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        if (label == greenTeamScore) {
+            greenTeamFlashingTimeline = timeline;
+        } else if (label == redTeamScore) {
+            redTeamFlashingTimeline = timeline;
+        }
+    }
+
+    // Method to stop the flashing effect
+    private void stopFlashing(Label label) {
+        if (label == greenTeamScore && greenTeamFlashingTimeline != null) {
+            greenTeamFlashingTimeline.stop();
+            greenTeamFlashingTimeline = null;
+            label.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-font-family: 'Arial Black'; -fx-text-fill: white;");
+        } else if (label == redTeamScore && redTeamFlashingTimeline != null) {
+            redTeamFlashingTimeline.stop();
+            redTeamFlashingTimeline = null;
+            label.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-font-family: 'Arial Black'; -fx-text-fill: white;");
+        }
+    }
+
+    // Method to update the flashing effect based on the team scores
+    private void updateFlashingEffect() {
+        int greenScore = actionScreenModel.getGreenScore();
+        int redScore = actionScreenModel.getRedScore();
+
+        if (greenScore > redScore) {
+            startFlashing(greenTeamScore);
+            stopFlashing(redTeamScore);
+        } else if (redScore > greenScore) {
+            startFlashing(redTeamScore);
+            stopFlashing(greenTeamScore);
+        } else {
+            stopFlashing(greenTeamScore);
+            stopFlashing(redTeamScore);
+        }
+    }
+
 }
