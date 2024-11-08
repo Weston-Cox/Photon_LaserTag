@@ -6,6 +6,7 @@ public class Player {
     private Team team;
     private int equipmentID;
     private int score;
+    private boolean hitBase;
 
 
 
@@ -16,6 +17,7 @@ public class Player {
         this.team = Team.getTeam(team);
         this.equipmentID = equipmentID;
         this.score = 0;
+        this.hitBase = false;
     }
 
 
@@ -57,5 +59,13 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public boolean getHitBase() {
+        return this.hitBase;
+    }
+
+    public void setHitBase(boolean hitBase) {
+        this.hitBase = hitBase;
     }
 }

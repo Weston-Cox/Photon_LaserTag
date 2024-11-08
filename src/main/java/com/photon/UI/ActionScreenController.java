@@ -234,15 +234,23 @@ public class ActionScreenController {
         String hitPlayerID = "-1";
 
         if (message.split(":")[1].equals("53") && attackingPlayer.getTeam() == Team.GREEN) { // Green player has hit the red base
+            if (attackingPlayer.getHitBase()) {
+                return; // If the player has already hit the base, do not allow them to hit it again
+            }
             System.out.println("Red base has been hit by "+attackingPlayer.getCodename());
             hitPlayerID = "53";
             attackingPlayer.setScore(attackingPlayer.getScore() + 100);
+            attackingPlayer.setHitBase(true);
             actionScreenModel.setGreenScore(actionScreenModel.getGreenScore() + 100);
 
         } else if (message.split(":")[1].equals("43") && attackingPlayer.getTeam() == Team.RED) { // 53 is the equipment ID for the green base
+            if (attackingPlayer.getHitBase()) {
+                return; // If the player has already hit the base, do not allow them to hit it again
+            }
             System.out.println("Green base has been hit by "+attackingPlayer.getCodename());
             hitPlayerID = "43";
             attackingPlayer.setScore(attackingPlayer.getScore() + 100);
+            attackingPlayer.setHitBase(true);
             actionScreenModel.setRedScore(actionScreenModel.getRedScore() + 100);
 
         } else if(defendingPlayer != null && attackingPlayer.getTeam() == defendingPlayer.getTeam()) { // Player has hit a teammate
@@ -277,8 +285,15 @@ public class ActionScreenController {
                 if (player != null && player.getCodename() != "") {
                     for (int i = 0; i < greenTeamBox.getChildren().size(); i++) {
                         GridPane playerGrid = (GridPane) greenTeamBox.getChildren().get(i);
+                        Label playerNameLabel = (Label) playerGrid.getChildren().get(0);
                         Label playerScoreLabel = (Label) playerGrid.getChildren().get(1);
-                        if (player.getCodename().equals(((Label) playerGrid.getChildren().get(0)).getText())) {
+                        if (player.getCodename().equals(playerNameLabel.getText())) {
+
+                            if (player.getHitBase()) {
+                                playerNameLabel.setText("B | " + playerNameLabel.getText());
+                                playerNameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: gold; -fx-font-family: 'Arial Black';");
+                            }
+
                             playerScoreLabel.setText(String.valueOf(player.getScore()));
                         }
                     }
@@ -289,8 +304,15 @@ public class ActionScreenController {
                 if (player != null && player.getCodename() != "") {
                     for (int i = 0; i < redTeamBox.getChildren().size(); i++) {
                         GridPane playerGrid = (GridPane) redTeamBox.getChildren().get(i);
+                        Label playerNameLabel = (Label) playerGrid.getChildren().get(0);
                         Label playerScoreLabel = (Label) playerGrid.getChildren().get(1);
-                        if (player.getCodename().equals(((Label) playerGrid.getChildren().get(0)).getText())) {
+                        if (player.getCodename().equals(playerNameLabel.getText())) {
+
+                            if (player.getHitBase()) {
+                                playerNameLabel.setText("B | " + playerNameLabel.getText());
+                                playerNameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: gold; -fx-font-family: 'Arial Black';");
+                            }
+
                             playerScoreLabel.setText(String.valueOf(player.getScore()));
                         }
                     }

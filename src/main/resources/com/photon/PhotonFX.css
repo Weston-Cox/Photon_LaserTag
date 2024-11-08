@@ -11,3 +11,13 @@
 	-fx-focus-color: transparent; /* Ensure focus color is transparent */
 	-fx-faint-focus-color: transparent; /* Ensure faint focus color is transparent */
 }
+
+.stylized-b {
+	font-size: 16px;
+	-fx-font-size: 16px;
+	font-weight: bold;
+	-fx-font-weight: bold;
+	-fx-text-fill: gold;
+	font-family: 'Arial Black';
+	-fx-font-family: 'Arial Black';
+}
