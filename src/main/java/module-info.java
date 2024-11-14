@@ -1,6 +1,7 @@
 module com.photon {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
     requires org.postgresql.jdbc;
     requires javafx.graphics;
     requires java.sql; // Add this line
