@@ -3,6 +3,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.scene.media.AudioClip;
+import java.util.Random;
 
 public class GameTimer {
     private static GameTimer instance;
@@ -34,6 +36,12 @@ public class GameTimer {
                 if (time[0] < 0) {
                     localTimer1.cancel();
                     Platform.runLater(callback::onCountdownFinished);
+                }
+                if (time[0] == 18){
+                    Random rand = new Random();
+                    int randNum = rand.nextInt(1,8);
+                    AudioClip gameSound = new AudioClip(getClass().getResource("/tracks/Track0" + randNum + ".mp3").toString());
+                    gameSound.play();
                 }
             }
         }, 0, 1000);
