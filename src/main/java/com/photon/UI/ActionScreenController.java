@@ -13,6 +13,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.media.AudioClip;
+import java.util.Random;
+import java.io.File;
+import java.net.URI;
 
 import com.photon.Models.ActionScreenModel;
 import com.photon.UDP.UDPClient;
@@ -201,6 +205,7 @@ public class ActionScreenController {
 
     // Main game countdown timer (6 minutes)
     private void startGameTimer() {
+        chooseRandomTrack();
         // Sends the game start signal to the server
             try {
                 udpClient.send("202");
@@ -384,6 +389,14 @@ public class ActionScreenController {
             stopFlashing(greenTeamScore);
             stopFlashing(redTeamScore);
         }
+    }
+
+    // Method to randomly choose track to play
+    private void chooseRandomTrack() {
+        Random rand = new Random();
+        int randNum = rand.nextInt(1,8);
+        AudioClip gameSound = new AudioClip(getClass().getResource("/tracks/Track0" + randNum + ".mp3").toString());
+        gameSound.play();
     }
 
 }
