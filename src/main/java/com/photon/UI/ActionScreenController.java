@@ -4,10 +4,15 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -68,7 +73,6 @@ public class ActionScreenController {
     public ActionScreenController() {
     }
 
-
     @FXML 
     private HBox actionScreenContent; // The HBox that contains the main content
 
@@ -80,8 +84,6 @@ public class ActionScreenController {
         // Initial styles when the screen is loaded
         preGameTimerLabel.setStyle("-fx-font-size: 38; -fx-font-weight: bold; -fx-text-fill: #ff0000;"); // Red pre-game timer
         timerLabel.setStyle("-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #0077cc;"); // Blue in-game timer
-
-
 
         splitPaneHorizontal.setManaged(false);
         splitPaneVertical.setManaged(false);
@@ -223,10 +225,25 @@ public class ActionScreenController {
                         e.printStackTrace();
                     }
                 }
+                showLeaderboardScreen();
             }
         });
     }
 
+    private void showLeaderboardScreen() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/photon/LeaderboardScreen.fxml"));
+            Parent leaderboardScreen = loader.load();
+            LeaderboardController controller = loader.getController();
+            controller.setPlayers(actionScreenModel.getGreenPlayers(), actionScreenModel.getRedPlayers());
+            Scene scene = new Scene(leaderboardScreen, 900, 720);
+            Stage stage = (Stage) timerLabel.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Leaderboard");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void runningGameLogic(String message) {
         Player attackingPlayer = actionScreenModel.findPlayerByEquipmentID(Integer.parseInt(message.split(":")[0]));
