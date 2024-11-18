@@ -5,17 +5,22 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import com.photon.Models.ActionScreenModel;
 import com.photon.UDP.UDPClient;
@@ -26,6 +31,8 @@ import com.photon.Helpers.Player;
 import com.photon.Helpers.Team;
 
 import java.io.IOException;
+import java.util.Random;
+
 import javafx.util.Duration;
 
 public class ActionScreenController {
@@ -35,7 +42,7 @@ public class ActionScreenController {
     private UDPClient udpClient;
     private UDPServer udpServer;
     private Timeline greenTeamFlashingTimeline;
-    private Timeline redTeamFlashingTimeline;
+    private Timeline redTeamFlashingTimeline; 
 
     @FXML
     private SplitPane splitPaneVertical; // The main split pane
@@ -66,6 +73,9 @@ public class ActionScreenController {
 
     @FXML
     private VBox redTeamBox;
+
+    @FXML 
+    private TextFlow playByPlayTextFlow; 
 
     // Empty constructor for JavaFX Platform
     public ActionScreenController() {
@@ -119,6 +129,8 @@ public class ActionScreenController {
         }
 
         this.udpServer.setCallback( message -> {
+            //TODO Handle the received message (parse, process, etc.)
+
             runningGameLogic(message);
 
         });
@@ -184,7 +196,7 @@ public class ActionScreenController {
     // Called when F5 is pressed to start the pre-game countdown
     public void startPreGameCountdown() {
         preGameTimerLabel.setVisible(true); // Show the large pre-game timer label
-        gameTimer.startPreGameCountdown(20, preGameTimerLabel, new CountdownCallback() { //TODO Change the countdown time to 31
+        gameTimer.startPreGameCountdown(20, preGameTimerLabel, new CountdownCallback() {
             @Override
             public void onCountdownFinished() {
                 preGameTimerLabel.setVisible(false); // Hide the large pre-game timer label
@@ -194,8 +206,7 @@ public class ActionScreenController {
                 startGameTimer();
             }
         });
-    }    
-
+    }
     // Main game countdown timer (6 minutes)
     private void startGameTimer() {
         // chooseRandomTrack();
@@ -209,7 +220,7 @@ public class ActionScreenController {
         splitPaneHorizontal.setManaged(true);
         splitPaneVertical.setManaged(true);
         textFlowPane.setManaged(true);
-        gameTimer.startGameCountdown(30, timerLabel, new CountdownCallback() { //TODO Change the countdown time to 361
+        gameTimer.startGameCountdown(361, timerLabel, new CountdownCallback() {
             @Override
             public void onCountdownFinished() { // Transmit the game over signal to the server three times
                 System.out.println("Game Over");
@@ -232,7 +243,6 @@ public class ActionScreenController {
             Parent leaderboardScreen = loader.load();
             LeaderboardController controller = loader.getController();
             controller.setPlayers(actionScreenModel.getGreenPlayers(), actionScreenModel.getRedPlayers());
-            controller.setDependencies(actionScreenModel, udpClient, udpServer);
             Scene scene = new Scene(leaderboardScreen, 900, 720);
             Stage stage = (Stage) timerLabel.getScene().getWindow();
             stage.setScene(scene);
@@ -251,7 +261,9 @@ public class ActionScreenController {
             if (attackingPlayer.getHitBase()) {
                 return; // If the player has already hit the base, do not allow them to hit it again
             }
-            System.out.println("Red base has been hit by "+attackingPlayer.getCodename());
+            String playByPlayMessage = "Red base has been hit by "+attackingPlayer.getCodename();
+            System.out.println(playByPlayMessage);
+            appendPlayByPlayMessage(playByPlayMessage);
             hitPlayerID = "53";
             attackingPlayer.setScore(attackingPlayer.getScore() + 100);
             attackingPlayer.setHitBase(true);
@@ -261,14 +273,18 @@ public class ActionScreenController {
             if (attackingPlayer.getHitBase()) {
                 return; // If the player has already hit the base, do not allow them to hit it again
             }
-            System.out.println("Green base has been hit by "+attackingPlayer.getCodename());
+            String playByPlayMessage = "Green base has been hit by " + attackingPlayer.getCodename();
+            System.out.println(playByPlayMessage);
+            appendPlayByPlayMessage(playByPlayMessage);
             hitPlayerID = "43";
             attackingPlayer.setScore(attackingPlayer.getScore() + 100);
             attackingPlayer.setHitBase(true);
             actionScreenModel.setRedScore(actionScreenModel.getRedScore() + 100);
 
         } else if(defendingPlayer != null && attackingPlayer.getTeam() == defendingPlayer.getTeam()) { // Player has hit a teammate
-            System.out.println("The attacking player ("+attackingPlayer.getCodename()+") has hit a teammate ("+defendingPlayer.getCodename()+")");
+            String playByPlayMessage = "The attacking player (" + attackingPlayer.getCodename() + ") has hit a teammate (" + defendingPlayer.getCodename() + ")";
+            System.out.println(playByPlayMessage);
+            appendPlayByPlayMessage(playByPlayMessage);
             hitPlayerID = attackingPlayer.getEquipmentID()+""; // If a player hits a teammate, return their own equipment ID
             attackingPlayer.setScore(attackingPlayer.getScore() - 10);
 
@@ -279,7 +295,9 @@ public class ActionScreenController {
             }
 
         } else if (defendingPlayer != null){ // Player has been hit by an opponent
-            System.out.println("The attacking player ("+attackingPlayer.getCodename()+") has hit the defending player ("+defendingPlayer.getCodename()+")");
+            String playByPlayMessage = "The attacking player (" + attackingPlayer.getCodename() + ") has hit a teammate (" + defendingPlayer.getCodename() + ")";
+            System.out.println(playByPlayMessage);
+            appendPlayByPlayMessage(playByPlayMessage);
             hitPlayerID = defendingPlayer.getEquipmentID()+"";
             attackingPlayer.setScore(attackingPlayer.getScore() + 10);
 
@@ -343,7 +361,19 @@ public class ActionScreenController {
 
     }
 
-    
+    private void appendPlayByPlayMessage(String message) {
+        Platform.runLater(() -> {
+            Text text = new Text(message + "\n");
+            text.setStyle("-fx-fill: white; -fx-font-size: 14;");
+            playByPlayTextFlow.getChildren().add(text);
+
+            // Scroll to the bottom of the text flow
+            if (playByPlayTextFlow.getChildren().size() > 50) {
+                playByPlayTextFlow.getChildren().remove(0);
+            }
+        });
+    }
+
     private void sendUDPReceivedReceipt(String hitPlayerID) {
         try {
             udpClient.send(hitPlayerID);
@@ -399,4 +429,13 @@ public class ActionScreenController {
             stopFlashing(redTeamScore);
         }
     }
+
+    // Method to randomly choose track to play
+    private void chooseRandomTrack() {
+        Random rand = new Random();
+        int randNum = rand.nextInt(1,8);
+        AudioClip gameSound = new AudioClip(getClass().getResource("/tracks/Track0" + randNum + ".mp3").toString());
+        gameSound.play();
+    }
+
 }
