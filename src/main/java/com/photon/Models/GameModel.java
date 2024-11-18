@@ -11,6 +11,8 @@ import com.photon.UDP.UDPClient;
 public class GameModel {
     protected Player greenPlayers[] = new Player[16];
     protected Player redPlayers[] = new Player[16];
+    protected int greenScore = 0;
+    protected int redScore = 0;
     protected PlayerDAO playerDAO;
     protected UDPClient udpClient;
 
@@ -63,26 +65,43 @@ public class GameModel {
 
 
     //*******************************************************************************************
+    // findPlayerByEquipmentID
+    // Description: Finds a player by their equipment ID
+    //*******************************************************************************************
+    public Player findPlayerByEquipmentID(int equipmentID) {
+        for (int i = 1; i < 16; i++) {
+            if (greenPlayers[i].getEquipmentID() == equipmentID) {
+                return greenPlayers[i];
+            }
+            if (redPlayers[i].getEquipmentID() == equipmentID) {
+                return redPlayers[i];
+            }
+        }
+        return null;
+    }
+
+
+    //*******************************************************************************************
     //! GETTERS AND SETTERS
     //*******************************************************************************************
     public PostgreSQL getPostgreSQL() {
         return playerDAO.getPostgreSQL();
     }
 
-    public Player[] getGreenPlayers() {
-        return greenPlayers;
-    }
-
     public void setGreenPlayers(Player[] greenPlayers) {
         this.greenPlayers = greenPlayers;
     }
 
-    public Player[] getRedPlayers() {
-        return redPlayers;
-    }
-
     public void setRedPlayers(Player[] redPlayers) {
         this.redPlayers = redPlayers;
+    }
+
+    public void setGreenScore(int greenScore) {
+        this.greenScore = greenScore;
+    }
+
+    public void setRedScore(int redScore) {
+        this.redScore = redScore;
     }
 
     public void setCodenameOfGreenPlayer(int row, String codename) {
@@ -119,6 +138,30 @@ public class GameModel {
         }
     }
 
+    public void setScoreOfGreenPlayer(int row, int score) {
+        greenPlayers[row].setScore(score);
+    }
+
+    public void setScoreOfRedPlayer(int row, int score) {
+        redPlayers[row].setScore(score);
+    }
+
+    public Player[] getGreenPlayers() {
+        return greenPlayers;
+    }
+
+    public Player[] getRedPlayers() {
+        return redPlayers;
+    }
+
+    public int getGreenScore() {
+        return greenScore;
+    }
+
+    public int getRedScore() {
+        return redScore;
+    }
+
     public String getCodenameOfGreenPlayer(int row) {
         return greenPlayers[row].getCodename();
     }
@@ -141,6 +184,14 @@ public class GameModel {
 
     public int getEquipmentIDOfRedPlayer(int row) {
         return redPlayers[row].getEquipmentID();
+    }
+
+    public int getScoreOfGreenPlayer(int row) {
+        return greenPlayers[row].getScore();
+    }
+
+    public int getScoreOfRedPlayer(int row) {
+        return redPlayers[row].getScore();
     }
 
 }

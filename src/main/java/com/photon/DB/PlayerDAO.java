@@ -18,7 +18,6 @@ public class PlayerDAO {
         try {
             this.postgreSQL = postgreSQL;
             this.connection = postgreSQL.getConnection();
-            System.out.println(this.connection);
         }
         catch (SQLException e) {
             e.printStackTrace();

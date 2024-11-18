@@ -5,15 +5,19 @@ public class Player {
     private int id;
     private Team team;
     private int equipmentID;
+    private int score;
+    private boolean hitBase;
 
 
 
 
-    public Player(String codename, int id, String team, int equipmnetId) {
+    public Player(String codename, int id, String team, int equipmentID) {
         this.codename = codename;
         this.id = id;
         this.team = Team.getTeam(team);
-        this.equipmentID = equipmnetId;
+        this.equipmentID = equipmentID;
+        this.score = 0;
+        this.hitBase = false;
     }
 
 
@@ -47,5 +51,21 @@ public class Player {
 
     public void setEquipmentID(int equipmentID) {
         this.equipmentID = equipmentID;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public boolean getHitBase() {
+        return this.hitBase;
+    }
+
+    public void setHitBase(boolean hitBase) {
+        this.hitBase = hitBase;
     }
 }

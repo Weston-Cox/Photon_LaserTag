@@ -15,24 +15,24 @@
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </VBox.margin></Label>
-      <SplitPane fx:id="splitPaneVertical" dividerPositions="0.6149468892261001" orientation="VERTICAL" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
+      <SplitPane fx:id="splitPaneVertical" dividerPositions="0.6713244228432564" orientation="VERTICAL" prefHeight="700.0" prefWidth="880.0" style="-fx-background-color: black;" VBox.vgrow="NEVER">
          <items>
             <SplitPane fx:id="splitPaneHorizontal" dividerPositions="0.5" minHeight="100.0" style="-fx-background-color: black;">
                <items>
             
                                 <!-- Main content area with teams and actions -->
-                    <HBox fx:id="actionScreenContent" alignment="TOP_CENTER" fillHeight="false" spacing="40.0" style="-fx-padding: 20;" visible="false">
+                    <HBox fx:id="actionScreenContent" alignment="TOP_CENTER" blendMode="SRC_ATOP" fillHeight="false" minHeight="150.0" spacing="40.0" style="-fx-padding: 20;" visible="false">
                         <!-- Green Team -->
-                        <VBox alignment="TOP_CENTER" minWidth="150.0" prefWidth="150.0" spacing="15.0">
-                            <Label style="-fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="GREEN TEAM" textFill="WHITE" />
+                        <VBox alignment="TOP_CENTER" prefWidth="150.0" spacing="15.0">
+                            <Label fx:id="greenTeamScore" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="GREEN TEAM : 0" textAlignment="JUSTIFY" textFill="WHITE" />
                             <VBox fx:id="greenTeamBox" alignment="TOP_LEFT" spacing="5">
                     <!-- Green Team players will be dynamically added here -->
                 </VBox>
                         </VBox>
             
                                     <!-- Red Team -->
-                        <VBox alignment="TOP_CENTER" minWidth="150.0" prefWidth="150.0" spacing="15">
-                            <Label prefHeight="30.0" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="RED TEAM" textFill="WHITE" />
+                        <VBox alignment="TOP_CENTER" prefWidth="150.0" spacing="15">
+                            <Label fx:id="redTeamScore" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-font-family: 'Arial Black';" text="RED TEAM : 0" textFill="WHITE" />
                             <VBox fx:id="redTeamBox" spacing="5">
                     <!-- Red Team players will be dynamically added here -->
                 </VBox>
@@ -47,7 +47,7 @@
             </SplitPane>
             <Pane fx:id="textFlowPane" prefHeight="400.0" prefWidth="878.0">
                <children>
-                  <TextFlow layoutX="39.0" layoutY="14.0" prefWidth="800.0" />
+                  <TextFlow fx:id= "playByPlayTextFlow" LayoutX="39.0" LayoutY="14.0" prefWidth="800.0" />
                </children>
             </Pane>
          </items>

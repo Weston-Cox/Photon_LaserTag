@@ -1,18 +1,15 @@
 package com.photon.Helpers;
-
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.photon.UDP.UDPClient;
-
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.scene.media.MediaPlayer;
 
 public class GameTimer {
     private static GameTimer instance;
     private Timer localTimer1;
     private Timer localTimer2;
+    private MediaPlayer gameSound;
 
     public GameTimer() {
         this.localTimer1 = new Timer(true);
@@ -40,6 +37,11 @@ public class GameTimer {
                     localTimer1.cancel();
                     Platform.runLater(callback::onCountdownFinished);
                 }
+                if (time[0] == 18){
+                    if (gameSound != null) {
+                        gameSound.play();
+                    }
+                }
             }
         }, 0, 1000);
     }
@@ -53,20 +55,31 @@ public class GameTimer {
                     int minutes = time[0] / 60;
                     int seconds = time[0] % 60;
                     String formattedTime = String.format("%02d:%02d", minutes, seconds);
-                    gameTimerLabel.setText("Time Remaining: " + formattedTime);
+                    gameTimerLabel.setText("Time: " + formattedTime);
                 });
                 time[0]--;
                 if (time[0] < 0) {
                     localTimer2.cancel();
                     Platform.runLater(callback::onCountdownFinished);
+                    if (gameSound != null) {
+                        gameSound.stop();
+                        gameSound.dispose();
+                    }
                 }
             }
         }, 0, 1000);
+
+
     }
     
     public void stopCountdown() {
         localTimer1.cancel();
         localTimer2.cancel();
+    }
+
+
+    public void setMediaPlayer(MediaPlayer gameSound) {
+        this.gameSound = gameSound;
     }
 
 }
