@@ -5,10 +5,8 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
@@ -121,8 +119,6 @@ public class ActionScreenController {
         }
 
         this.udpServer.setCallback( message -> {
-            //TODO Handle the received message (parse, process, etc.)
-
             runningGameLogic(message);
 
         });
@@ -213,7 +209,7 @@ public class ActionScreenController {
         splitPaneHorizontal.setManaged(true);
         splitPaneVertical.setManaged(true);
         textFlowPane.setManaged(true);
-        gameTimer.startGameCountdown(361, timerLabel, new CountdownCallback() {
+        gameTimer.startGameCountdown(30, timerLabel, new CountdownCallback() { //TODO Change the countdown time to 361
             @Override
             public void onCountdownFinished() { // Transmit the game over signal to the server three times
                 System.out.println("Game Over");

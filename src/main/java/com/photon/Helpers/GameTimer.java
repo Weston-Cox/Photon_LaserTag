@@ -3,13 +3,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
-import javafx.scene.media.AudioClip;
+import javafx.scene.media.MediaPlayer;
 import java.util.Random;
 
 public class GameTimer {
     private static GameTimer instance;
     private Timer localTimer1;
     private Timer localTimer2;
+    private MediaPlayer gameSound;
 
     public GameTimer() {
         this.localTimer1 = new Timer(true);
@@ -38,10 +39,9 @@ public class GameTimer {
                     Platform.runLater(callback::onCountdownFinished);
                 }
                 if (time[0] == 18){
-                    Random rand = new Random();
-                    int randNum = rand.nextInt(1,8);
-                    AudioClip gameSound = new AudioClip(getClass().getResource("/tracks/Track0" + randNum + ".mp3").toString());
-                    gameSound.play();
+                    if (gameSound != null) {
+                        gameSound.play();
+                    }
                 }
             }
         }, 0, 1000);
@@ -62,14 +62,25 @@ public class GameTimer {
                 if (time[0] < 0) {
                     localTimer2.cancel();
                     Platform.runLater(callback::onCountdownFinished);
+                    if (gameSound != null) {
+                        gameSound.stop();
+                        gameSound.dispose();
+                    }
                 }
             }
         }, 0, 1000);
+
+
     }
     
     public void stopCountdown() {
         localTimer1.cancel();
         localTimer2.cancel();
+    }
+
+
+    public void setMediaPlayer(MediaPlayer gameSound) {
+        this.gameSound = gameSound;
     }
 
 }
