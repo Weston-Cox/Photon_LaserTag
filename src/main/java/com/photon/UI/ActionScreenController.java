@@ -368,7 +368,7 @@ public class ActionScreenController {
     private void appendPlayByPlayMessage(String message) {
         Platform.runLater(() -> {
         Text text = new Text(message + "\n");
-        text.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-font-family: 'Arial';");
+        text.setStyle("-fx-fill: white; -fx-font-size: 14;");
         playByPlayTextFlow.getChildren().add(text);
 
            
