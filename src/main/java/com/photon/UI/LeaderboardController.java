@@ -52,7 +52,7 @@ public class LeaderboardController {
         }
     }
 
-    public void setDependencies(ActionScreenModel actionScreenModel, UDPClient udpClient, UDPServer udpServer) {
+    public void setDependencies(ActionScreenModel actionScreenModel, UDPClient udpClient, UDPServer udpServer, GameTimer gameTimer) {
         this.actionScreenModel = actionScreenModel;
         this.udpClient = udpClient;
         this.udpServer = udpServer;
@@ -60,7 +60,7 @@ public class LeaderboardController {
 
         // Create the MediaPlayer instance
         Random rand = new Random();
-        int randNum = rand.nextInt(1,8);
+        int randNum = rand.nextInt(1, 8);
         Media media = new Media(getClass().getResource("/tracks/Track0" + randNum + ".mp3").toString());
         gameSound = new MediaPlayer(media);
         this.gameTimer.setMediaPlayer(gameSound);
@@ -72,7 +72,6 @@ public class LeaderboardController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/photon/InitialScreen.fxml"));
             loader.setControllerFactory(param -> {
                 if (param == InitialScreenController.class) {
-
                     return new InitialScreenController(
                         actionScreenModel.getPostgreSQL(),
                         udpClient,

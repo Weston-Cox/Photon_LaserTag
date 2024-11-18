@@ -224,7 +224,7 @@ public class ActionScreenController {
         splitPaneHorizontal.setManaged(true);
         splitPaneVertical.setManaged(true);
         textFlowPane.setManaged(true);
-        gameTimer.startGameCountdown(361, timerLabel, new CountdownCallback() {
+        gameTimer.startGameCountdown(10, timerLabel, new CountdownCallback() {
             @Override
             public void onCountdownFinished() { // Transmit the game over signal to the server three times
                 System.out.println("Game Over");
@@ -247,6 +247,7 @@ public class ActionScreenController {
             Parent leaderboardScreen = loader.load();
             LeaderboardController controller = loader.getController();
             controller.setPlayers(actionScreenModel.getGreenPlayers(), actionScreenModel.getRedPlayers());
+            controller.setDependencies(actionScreenModel, udpClient, udpServer, gameTimer);
             Scene scene = new Scene(leaderboardScreen, 900, 720);
             Stage stage = (Stage) timerLabel.getScene().getWindow();
             stage.setScene(scene);
