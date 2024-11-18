@@ -236,6 +236,7 @@ public class ActionScreenController {
             Parent leaderboardScreen = loader.load();
             LeaderboardController controller = loader.getController();
             controller.setPlayers(actionScreenModel.getGreenPlayers(), actionScreenModel.getRedPlayers());
+            controller.setDependencies(actionScreenModel, udpClient, udpServer, gameTimer);
             Scene scene = new Scene(leaderboardScreen, 900, 720);
             Stage stage = (Stage) timerLabel.getScene().getWindow();
             stage.setScene(scene);

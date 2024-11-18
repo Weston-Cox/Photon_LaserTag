@@ -55,10 +55,6 @@ public class InitialScreenController {
     private Map<Integer, TextField[]> redPlayers = new HashMap<>();
 	private boolean codenamePulledFromDB = false;
 
-	// No-argument constructor
-    public InitialScreenController() {
-    }
-
     public InitialScreenController(PostgreSQL postgreSQL, UDPClient udpClient, UDPServer udpServer, GameTimer gameTimer) {
         this.initialScreenModel = new InitialScreenModel(postgreSQL); // Dependency Injection
 		this.gameTimer = gameTimer;
