@@ -73,7 +73,23 @@ The Photon Laser Tag Java application serves as the main software for managing a
 
 ### Usage
 
-* Before attempting to run the application, start the virtual machine.
+* **Before attempting to run the application, we must do two things:**
+
+  1.  Start the virtual machine (self-explanatory)
+
+  2.  Run the edited traffic generator within the repo.
+  
+      - To do this, navigate to the \Helpers directory from the root of the project.
+        ```bash
+        cd src/main/java/com/photon/Helpers
+
+      - Then, run the `python_trafficgenerator_v2.py` by typing your respective python command:
+        ```bash
+        python3 python_trafficgenerator_v2.py
+
+      - The terminal should then prompt you to type in the equipment IDs for the red and green players. Be sure to type the exact same equipment IDs that you entered in the Initial Screen.
+        ![image](https://github.com/user-attachments/assets/c73f3c41-f68a-4c4b-b9a0-ee6963af4016)
+
 
 * To run the application, use the following command:
 
