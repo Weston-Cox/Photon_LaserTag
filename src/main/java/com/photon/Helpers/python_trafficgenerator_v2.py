@@ -18,7 +18,7 @@ bufferSize  = 4096
 serverAddressPort   = (get_local_ip(), 7500) # CHANGED
 clientAddressPort   = (get_local_ip(), 7501) # CHANGED
 
-print(get_local_ip())
+# print(get_local_ip())
 
 
 print('this program will generate some test traffic for 2 players on the red ')

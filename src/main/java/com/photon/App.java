@@ -2,6 +2,7 @@ package com.photon;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Random;
 
 import com.photon.DB.PostgreSQL;
 import com.photon.Helpers.GameTimer;
@@ -12,6 +13,9 @@ import com.photon.UI.InitialScreenController;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,6 +30,8 @@ public class App extends Application {
     private static UDPClient udpClient;
     private static UDPServer udpServer;
     private Thread udpServerThread;
+    private MediaPlayer gameSound;
+
 
 
 
@@ -37,6 +43,13 @@ public class App extends Application {
         });
         postgreObj = PostgreSQL.getInstance();
         gameTimer = new GameTimer();
+
+        // Create the MediaPlayer instance
+        Random rand = new Random();
+        int randNum = rand.nextInt(1,8);
+        Media media = new Media(getClass().getResource("/tracks/Track0" + randNum + ".mp3").toString());
+        gameSound = new MediaPlayer(media);
+        gameTimer.setMediaPlayer(gameSound);
 
         // Start the UDP server in a new thread
         udpServerThread = new Thread(udpServer);
@@ -120,6 +133,25 @@ public class App extends Application {
                 System.out.println("Error joining UDP Server thread: App\n" + e);
             }
         }
+
+        // Ensure the MediaPlayer is properly stopped and disposed of
+        if (gameSound != null) {
+            
+        }
+
+
+        // Ensure all JavaFX threads are closed
+        Platform.exit();
+
+        // Forcefully exit the application
+        new Thread(() -> {
+            try {
+                Thread.sleep(2000); // Wait for 2 seconds to allow resources to be disposed of
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.exit(0); // Forcefully exit the application
+        }).start();
     }
 
     public static void setRoot(String fxml) throws IOException {
