@@ -184,7 +184,7 @@ public class ActionScreenController {
     // Called when F5 is pressed to start the pre-game countdown
     public void startPreGameCountdown() {
         preGameTimerLabel.setVisible(true); // Show the large pre-game timer label
-        gameTimer.startPreGameCountdown(20, preGameTimerLabel, new CountdownCallback() {
+        gameTimer.startPreGameCountdown(20, preGameTimerLabel, new CountdownCallback() { //TODO Change the countdown time to 31
             @Override
             public void onCountdownFinished() {
                 preGameTimerLabel.setVisible(false); // Hide the large pre-game timer label
@@ -232,7 +232,7 @@ public class ActionScreenController {
             Parent leaderboardScreen = loader.load();
             LeaderboardController controller = loader.getController();
             controller.setPlayers(actionScreenModel.getGreenPlayers(), actionScreenModel.getRedPlayers());
-            controller.setDependencies(actionScreenModel, udpClient, udpServer, gameTimer);
+            controller.setDependencies(actionScreenModel, udpClient, udpServer);
             Scene scene = new Scene(leaderboardScreen, 900, 720);
             Stage stage = (Stage) timerLabel.getScene().getWindow();
             stage.setScene(scene);

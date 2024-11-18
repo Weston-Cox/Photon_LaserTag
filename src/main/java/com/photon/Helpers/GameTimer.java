@@ -4,7 +4,6 @@ import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.media.MediaPlayer;
-import java.util.Random;
 
 public class GameTimer {
     private static GameTimer instance;

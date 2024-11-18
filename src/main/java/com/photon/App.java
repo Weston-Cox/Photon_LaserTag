@@ -134,11 +134,6 @@ public class App extends Application {
             }
         }
 
-        // Ensure the MediaPlayer is properly stopped and disposed of
-        if (gameSound != null) {
-            
-        }
-
 
         // Ensure all JavaFX threads are closed
         Platform.exit();

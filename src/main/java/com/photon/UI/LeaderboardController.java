@@ -1,6 +1,7 @@
 package com.photon.UI;
 
 import java.io.IOException;
+import java.util.Random;
 
 import com.photon.Helpers.GameTimer;
 import com.photon.Helpers.Player;
@@ -15,6 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class LeaderboardController {
@@ -32,6 +35,7 @@ public class LeaderboardController {
     private UDPClient udpClient;
     private UDPServer udpServer;
     private GameTimer gameTimer;
+    private MediaPlayer gameSound;
 
     public void setPlayers(Player[] greenPlayers, Player[] redPlayers) {
         displayPlayers(greenPlayers, greenTeamLeaderboard, "green");
@@ -48,11 +52,18 @@ public class LeaderboardController {
         }
     }
 
-    public void setDependencies(ActionScreenModel actionScreenModel, UDPClient udpClient, UDPServer udpServer, GameTimer gameTimer) {
+    public void setDependencies(ActionScreenModel actionScreenModel, UDPClient udpClient, UDPServer udpServer) {
         this.actionScreenModel = actionScreenModel;
         this.udpClient = udpClient;
         this.udpServer = udpServer;
-        this.gameTimer = gameTimer;
+        this.gameTimer = new GameTimer();
+
+        // Create the MediaPlayer instance
+        Random rand = new Random();
+        int randNum = rand.nextInt(1,8);
+        Media media = new Media(getClass().getResource("/tracks/Track0" + randNum + ".mp3").toString());
+        gameSound = new MediaPlayer(media);
+        this.gameTimer.setMediaPlayer(gameSound);
     }
 
     @FXML
@@ -61,6 +72,7 @@ public class LeaderboardController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/photon/InitialScreen.fxml"));
             loader.setControllerFactory(param -> {
                 if (param == InitialScreenController.class) {
+
                     return new InitialScreenController(
                         actionScreenModel.getPostgreSQL(),
                         udpClient,
