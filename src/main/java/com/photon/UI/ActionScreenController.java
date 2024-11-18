@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
@@ -76,6 +77,9 @@ public class ActionScreenController {
 
     @FXML 
     private TextFlow playByPlayTextFlow; 
+
+     @FXML
+    private ScrollPane scrollPane; // The ScrollPane for the TextFlow
 
     // Empty constructor for JavaFX Platform
     public ActionScreenController() {
@@ -368,9 +372,8 @@ public class ActionScreenController {
             playByPlayTextFlow.getChildren().add(text);
 
             // Scroll to the bottom of the text flow
-            if (playByPlayTextFlow.getChildren().size() > 50) {
-                playByPlayTextFlow.getChildren().remove(0);
-            }
+            scrollPane.layout();
+            scrollPane.setVvalue(1.0);
         });
     }
 
