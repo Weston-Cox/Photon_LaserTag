@@ -367,14 +367,16 @@ public class ActionScreenController {
 
     private void appendPlayByPlayMessage(String message) {
         Platform.runLater(() -> {
-            Text text = new Text(message + "\n");
-            text.setStyle("-fx-fill: white; -fx-font-size: 14;");
-            playByPlayTextFlow.getChildren().add(text);
+        Text text = new Text(message + "\n");
+        text.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-font-family: 'Arial';");
+        playByPlayTextFlow.getChildren().add(text);
 
-            // Scroll to the bottom of the text flow
-            scrollPane.layout();
-            scrollPane.setVvalue(1.0);
-        });
+           
+        int maxMessages = 10;
+        if (playByPlayTextFlow.getChildren().size() > maxMessages) {
+            playByPlayTextFlow.getChildren().remove(0);
+        }
+    });
     }
 
     private void sendUDPReceivedReceipt(String hitPlayerID) {

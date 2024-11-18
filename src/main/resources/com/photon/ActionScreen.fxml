@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<? import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -48,9 +47,7 @@
             </SplitPane>
             <Pane fx:id="textFlowPane" prefHeight="400.0" prefWidth="878.0">
                <children>
-             <ScrollPane fx:id="scrollPane" prefHeight="400.0" prefWidth="878.0">
-               <content>"
-                  <TextFlow fx:id= "playByPlayTextFlow"  prefWidth="800.0" />
+                  <TextFlow fx:id= "playByPlayTextFlow" LayoutX="39.0" LayoutY="14.0" prefWidth="800.0" />
                </children>
             </Pane>
          </items>
